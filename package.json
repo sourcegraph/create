@@ -1,0 +1,65 @@
+{
+  "name": "@sourcegraph/create",
+  "version": "0.0.0-DEVELOPMENT",
+  "description": "CLI to bootstrap Sourcegraph npm packages",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sourcegraph/create.git"
+  },
+  "bin": {
+    "src-create": "dist/cli.js"
+  },
+  "keywords": [
+    "cli",
+    "npm",
+    "create",
+    "generate",
+    "generator",
+    "bootstrap",
+    "boilerplate"
+  ],
+  "license": "UNLICENSED",
+  "scripts": {
+    "tslint": "tslint -p tsconfig.json -c tslint.json 'src/**/*.ts'",
+    "build": "tsc -p .",
+    "package-schema": "download http://json.schemastore.org/package | json2ts | prettier --parser typescript > src/package.ts",
+    "travis-schema": "download http://json.schemastore.org/travis | json2ts | prettier --parser typescript > src/travis.ts",
+    "tsconfig-schema": "download http://json.schemastore.org/tsconfig | json2ts | prettier --parser typescript > src/tsconfig.ts",
+    "tslint-schema": "download http://json.schemastore.org/tslint | json2ts | prettier --parser typescript > src/tslint.ts",
+    "prettier": "prettier '**/{*.{js?(on),ts?(x),scss},.*.js?(on)}' --write --list-different",
+    "commitmsg": "commitlint -e $GIT_PARAMS",
+    "semantic-release": "semantic-release"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "dependencies": {
+    "execa": "^0.10.0",
+    "inquirer": "^6.0.0",
+    "js-yaml": "^3.12.0",
+    "mz": "^2.7.0",
+    "npm-registry-client": "^8.6.0",
+    "request-promise": "^4.2.2"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^7.0.0",
+    "@commitlint/config-conventional": "^7.0.1",
+    "@sourcegraph/prettierrc": "^2.2.0",
+    "@sourcegraph/tsconfig": "^3.0.0",
+    "@sourcegraph/tslint-config": "^12.0.0",
+    "@types/execa": "^0.9.0",
+    "@types/inquirer": "0.0.42",
+    "@types/js-yaml": "^3.11.2",
+    "@types/mz": "0.0.32",
+    "@types/request-promise": "^4.1.42",
+    "husky": "^0.14.3",
+    "json-schema-to-typescript": "^5.5.0",
+    "prettier": "^1.14.0",
+    "semantic-release": "^15.9.3",
+    "source-map-support": "^0.5.6",
+    "tslint": "^5.11.0",
+    "typescript": "^3.0.1"
+  }
+}

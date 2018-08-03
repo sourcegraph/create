@@ -1,0 +1,11 @@
+{
+  "extends": "./node_modules/@sourcegraph/tsconfig/tsconfig.json",
+  "compilerOptions": {
+    "target": "es2016",
+    "module": "commonjs",
+    "sourceMap": true,
+    "declaration": true,
+    "outDir": "dist",
+    "typeRoots": ["node_modules/@types", "types"]
+  }
+}
