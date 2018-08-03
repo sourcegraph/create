@@ -36,6 +36,7 @@
     ]
   },
   "dependencies": {
+    "chalk": "^2.4.1",
     "execa": "^0.10.0",
     "inquirer": "^6.0.0",
     "js-yaml": "^3.12.0",
