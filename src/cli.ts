@@ -65,7 +65,7 @@ async function main(): Promise<void> {
         name: 'packageName',
         message:
             'What should the name of the package be? Examples: @sourcegraph/codeintellify, @sourcegraph/react-loading-spinner, cxp',
-        default: '@sourcegraph/' + (await path.basename(process.cwd())),
+        default: '@sourcegraph/' + path.basename(process.cwd()),
     })
 
     const { description } = await prompt<{ description: string }>({
