@@ -6,6 +6,9 @@
     "type": "git",
     "url": "git+https://github.com/sourcegraph/create.git"
   },
+  "files": [
+    "dist"
+  ],
   "bin": {
     "src-create": "dist/cli.js"
   },
