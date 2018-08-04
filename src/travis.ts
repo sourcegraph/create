@@ -81,19 +81,18 @@ export async function initTravis({
             jobs: {
                 include: [
                     {
-                        step: 'test',
+                        stage: 'test',
                         script: [
-                            'npm ci',
                             'npm run prettier',
                             'npm run tslint',
                             'npm run build',
                             ...(hasTests
                                 ? ['npm test', 'nyc report --reporter json', 'bash <(curl -s https://codecov.io/bash)']
                                 : []),
-                        ].join('\n'),
+                        ],
                     },
                     {
-                        step: 'release',
+                        stage: 'release',
                         script: ['npm run build', 'npm run semantic-release'],
                     },
                 ],
