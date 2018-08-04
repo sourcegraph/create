@@ -136,7 +136,10 @@ async function main(): Promise<void> {
     if (licenseName !== 'UNLICENSED') {
         console.log('📄 Adding LICENSE')
         const license = (await githubClient.get(`licenses/${licenseName}`)).body
-        await writeFile('LICENSE', license.body)
+        const licenseText = license.body
+            .replace(/\[year\]/g, new Date().getFullYear())
+            .replace(/\[fullname\]/g, 'Sourcegraph')
+        await writeFile('LICENSE', licenseText)
     }
 
     const { hasTests } = await prompt<{ hasTests: boolean }>({
