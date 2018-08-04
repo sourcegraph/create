@@ -117,7 +117,7 @@ export async function initTravis({
     await travisClient.post(`user/${travisUser.id}/sync`)
     while ((await getCurrentTravisUser({ travisClient })).is_syncing) {
         console.log('Waiting for sync to finish...')
-        await new Promise(resolve => setTimeout(resolve, 1000))
+        await new Promise<void>(resolve => setTimeout(resolve, 1000))
     }
 
     console.log(`Activating repository at https://travis-ci.org/sourcegraph/${repoName}`)
