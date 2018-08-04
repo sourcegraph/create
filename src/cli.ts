@@ -4,7 +4,7 @@ import 'source-map-support/register'
 import chalk from 'chalk'
 import exec = require('execa')
 import { prompt } from 'inquirer'
-import { exists, writeFile } from 'mz/fs'
+import { exists, mkdir, writeFile } from 'mz/fs'
 import * as path from 'path'
 import { createBuildkiteClient, initBuildkite } from './buildkite'
 import { CodeCovRepo, createCodeCovClient, getCodeCovBadge } from './codecov'
@@ -222,6 +222,15 @@ async function main(): Promise<void> {
                 : {}),
         }
         await writeFile('package.json', JSON.stringify(packageJson, null, 2))
+    }
+
+    try {
+        console.log('📂 Creating src directory')
+        await mkdir('src')
+    } catch (err) {
+        if (err.code !== 'EEXIST') {
+            throw err
+        }
     }
 
     console.log('📦 Installing dependencies')
