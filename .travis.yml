@@ -1,0 +1,27 @@
+language: node_js
+node_js: '10'
+cache:
+  directories:
+    - ~/.npm
+env:
+  global:
+    - FORCE_COLOR=1
+jobs:
+  include:
+    - step: test
+      script: |-
+        npm ci
+        npm run prettier
+        npm run tslint
+        npm run build
+    - step: release
+      script:
+        - npm run build
+        - npm run semantic-release
+stages:
+  - test
+  - name: release
+    if: branch = master AND type = push AND fork = false
+branches:
+  only:
+    - master
