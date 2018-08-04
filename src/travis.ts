@@ -40,6 +40,20 @@ const createTravisEnvVar = async ({
     })
 }
 
+interface TravisUser {
+    id: number
+    login: string
+    name: string
+    github_id: number
+    avatar_url: string
+    education: boolean
+    is_syncing: boolean
+    synced_at: string
+}
+
+const getCurrentTravisUser = async ({ travisClient }: { travisClient: TravisClient }): Promise<TravisUser> =>
+    (await travisClient.get('user')).body
+
 export async function initTravis({
     hasTests,
     repoName,
@@ -96,6 +110,14 @@ export async function initTravis({
             },
         }
         await writeFile('.travis.yml', yaml.dump(travisYaml))
+    }
+
+    const travisUser = await getCurrentTravisUser({ travisClient })
+    console.log('Triggering Travis sync of repositories')
+    await travisClient.post(`user/${travisUser.id}/sync`)
+    while ((await getCurrentTravisUser({ travisClient })).is_syncing) {
+        console.log('Waiting for sync to finish...')
+        await new Promise(resolve => setTimeout(resolve, 1000))
     }
 
     console.log(`Activating repository at https://travis-ci.org/sourcegraph/${repoName}`)
