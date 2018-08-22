@@ -178,6 +178,26 @@ async function main(): Promise<void> {
         await writeFile('tslint.json', JSON.stringify(tslintJson, null, 2))
     }
 
+    console.log('📄 Adding .editorconfig')
+    await writeFile(
+        '.editorconfig',
+        [
+            '[*]',
+            'insert_final_newline = true',
+            'end_of_line = lf',
+            'charset = utf-8',
+            'trim_trailing_whitespace = true',
+            'indent_style = space',
+            'indent_size = 4',
+            '',
+            '[*.{json,js,yml}]',
+            'indent_size = 2',
+            '',
+            '[*.md]',
+            'trim_trailing_whitespace = false',
+        ].join('\n')
+    )
+
     console.log('📄 Adding prettier.config.js')
     await writeFile('prettier.config.js', "module.exports = require('@sourcegraph/prettierrc')\n")
 
