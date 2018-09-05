@@ -78,6 +78,7 @@ export async function initTravis({
             env: {
                 global: ['FORCE_COLOR=1'],
             },
+            install: ['npm ci'],
             jobs: {
                 include: [
                     {
@@ -105,7 +106,7 @@ export async function initTravis({
                 },
             ],
             branches: {
-                only: ['master'],
+                only: ['master', /^renovate\//.toString()],
             },
         }
         await writeFile('.travis.yml', yaml.dump(travisYaml))
