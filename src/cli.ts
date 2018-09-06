@@ -4,7 +4,7 @@ import 'source-map-support/register'
 import chalk from 'chalk'
 import exec = require('execa')
 import { prompt } from 'inquirer'
-import { exists, mkdir, writeFile } from 'mz/fs'
+import { exists, mkdir, readFile, writeFile } from 'mz/fs'
 import * as path from 'path'
 import { createBuildkiteClient, initBuildkite } from './buildkite'
 import { CodeCovRepo, createCodeCovClient, getCodeCovBadge } from './codecov'
@@ -61,17 +61,33 @@ async function main(): Promise<void> {
         await exec('git', ['init'])
     }
 
-    const { packageName } = await prompt<{ packageName: string }>({
-        name: 'packageName',
-        message:
-            'What should the name of the package be? Examples: @sourcegraph/codeintellify, @sourcegraph/react-loading-spinner, cxp',
-        default: '@sourcegraph/' + path.basename(process.cwd()),
-    })
-
-    const { description } = await prompt<{ description: string }>({
-        name: 'description',
-        message: 'Description',
-    })
+    let packageName: string | undefined
+    let description: string | undefined
+    try {
+        ;({ packageName, description } = JSON.parse(await readFile('package.json', 'utf-8')))
+    } catch (err) {
+        if (err.code !== 'ENOENT') {
+            throw err
+        }
+    }
+    if (packageName) {
+        console.log(`Package name is "${packageName}"`)
+    } else {
+        ;({ packageName } = await prompt<{ packageName: string }>({
+            name: 'packageName',
+            message:
+                'What should the name of the package be? Examples: @sourcegraph/codeintellify, @sourcegraph/react-loading-spinner, cxp',
+            default: '@sourcegraph/' + path.basename(process.cwd()),
+        }))
+    }
+    if (description) {
+        console.log(`Description is "${description}"`)
+    } else {
+        ;({ description } = await prompt<{ description: string }>({
+            name: 'description',
+            message: 'Description',
+        }))
+    }
 
     const { visibility } = await prompt<{ visibility: 'public' | 'private' }>({
         type: 'list',
