@@ -1,5 +1,5 @@
-import { prompt } from 'inquirer'
 import _request = require('request-promise')
+import * as prompt from './prompt'
 const request = _request.defaults({ resolveWithFullResponse: true })
 
 export type GitHubClient = typeof request
@@ -24,17 +24,9 @@ export async function createSourcegraphBotGitHubToken({
     console.log(
         'See credentials in https://team-sourcegraph.1password.com/vaults/dnrhbauihkhjs5ag6vszsme45a/allitems/7s46bqcnl5hxzbutupu44va7gu'
     )
-    const { password, otp } = await prompt<{ password: string; otp: string }>([
-        {
-            name: 'password',
-            type: 'password',
-            message: '@sourcegraph-bot GitHub password',
-        },
-        {
-            name: 'otp',
-            message: '@sourcegraph-bot GitHub 2FA code',
-        },
-    ])
+    const password = await prompt.password('@sourcegraph-bot GitHub password')
+    const otp = await prompt.input('@sourcegraph-bot GitHub 2FA code')
+
     const response = await githubClient.post('authorizations', {
         headers: {
             Authorization: 'Basic ' + Buffer.from('sourcegraph-bot:' + password).toString('base64'),

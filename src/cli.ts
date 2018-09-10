@@ -3,13 +3,13 @@ import 'source-map-support/register'
 
 import chalk from 'chalk'
 import exec = require('execa')
-import { prompt } from 'inquirer'
 import { exists, mkdir, readFile, writeFile } from 'mz/fs'
 import * as path from 'path'
 import { createBuildkiteClient, initBuildkite } from './buildkite'
 import { CodeCovRepo, createCodeCovClient, getCodeCovBadge } from './codecov'
 import { createGitHubClient } from './github'
 import { JsonSchemaForNpmPackageJsonFiles } from './package-schema'
+import * as prompt from './prompt'
 import { createTravisClient, initTravis } from './travis'
 import { JsonSchemaForTheTypeScriptCompilersConfigurationFile } from './tsconfig-schema'
 import { JsonSchemaForTheTsLintConfigurationFiles } from './tslint-schema'
@@ -73,41 +73,35 @@ async function main(): Promise<void> {
     if (packageName) {
         console.log(`Package name is "${packageName}"`)
     } else {
-        ;({ packageName } = await prompt<{ packageName: string }>({
-            name: 'packageName',
+        packageName = await prompt.input({
             message:
                 'What should the name of the package be? Examples: @sourcegraph/codeintellify, @sourcegraph/react-loading-spinner, cxp',
             default: '@sourcegraph/' + path.basename(process.cwd()),
-        }))
+        })
     }
     if (description) {
         console.log(`Description is "${description}"`)
     } else {
-        ;({ description } = await prompt<{ description: string }>({
-            name: 'description',
-            message: 'Description',
-        }))
+        description = await prompt.input('Description')
     }
 
-    const { visibility } = await prompt<{ visibility: 'public' | 'private' }>({
-        type: 'list',
-        name: 'visibility',
+    enum Visibility {
+        Public = 'Public',
+        Private = 'Private',
+    }
+    const visibility = await prompt.choices({
         message: '🔐 Should this package be public or private?',
-        choices: ['public', 'private'],
+        choices: [Visibility.Public, Visibility.Private],
     })
 
     let repoName = packageName.replace(/^@sourcegraph\//, '')
     if (!(await exec('git', ['remote'])).stdout) {
-        ;({ repoName } = await prompt<{ repoName: string }>({
-            name: 'repoName',
-            message: 'Repository name',
-            default: repoName,
-        }))
+        repoName = await prompt.input({ message: 'Repository name', default: repoName })
         try {
             await githubClient.post(`orgs/sourcegraph/repos`, {
                 body: {
                     name: repoName,
-                    private: visibility === 'private',
+                    private: visibility === Visibility.Private,
                     description,
                     has_wiki: false,
                     has_projects: false,
@@ -143,11 +137,14 @@ async function main(): Promise<void> {
         },
     })
 
-    const { licenseName } = await prompt<{ licenseName: string }>({
+    enum LicenseName {
+        Unlicensed = 'UNLICENSED',
+        Mit = 'MIT',
+    }
+    const licenseName = await prompt.choices({
         message: 'License?',
         choices: ['UNLICENSED', 'MIT'],
-        default: { private: 'UNLICENSED', public: 'MIT' }[visibility],
-        name: 'licenseName',
+        default: { [Visibility.Private]: LicenseName.Unlicensed, [Visibility.Public]: LicenseName.Mit }[visibility],
     })
     if (licenseName !== 'UNLICENSED') {
         console.log('📄 Adding LICENSE')
@@ -158,11 +155,7 @@ async function main(): Promise<void> {
         await writeFile('LICENSE', licenseText)
     }
 
-    const { hasTests } = await prompt<{ hasTests: boolean }>({
-        type: 'confirm',
-        message: 'Does this package have tests?',
-        name: 'hasTests',
-    })
+    const hasTests = await prompt.confirm('Does this package have tests?')
 
     if (await exists('tsconfig.json')) {
         console.log('📄 tsconfig.json already exists, skipping creation')
@@ -313,7 +306,7 @@ async function main(): Promise<void> {
     const codeCovImageToken = codeCovRepo.repo.image_token
 
     let buildBadge: string
-    if (visibility === 'private') {
+    if (visibility === Visibility.Private) {
         const { badgeUrl, webUrl } = await initBuildkite({
             hasTests,
             repoName,
@@ -334,7 +327,7 @@ async function main(): Promise<void> {
         const readme = [
             `# ${packageName}`,
             '',
-            ...(visibility === 'public'
+            ...(visibility === Visibility.Public
                 ? [
                       `[![npm](https://img.shields.io/npm/v/${packageName}.svg)](https://www.npmjs.com/package/${packageName})`,
                       `[![downloads](https://img.shields.io/npm/dt/${packageName}.svg)](https://www.npmjs.com/package/${packageName})`,
