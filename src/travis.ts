@@ -72,29 +72,27 @@ export async function initTravis({
         const travisYaml: JsonSchemaForTravisCiConfigurationFiles = {
             language: 'node_js',
             node_js: '10',
-            cache: {
-                directories: ['~/.npm'],
-            },
+            cache: 'yarn',
             env: {
                 global: ['FORCE_COLOR=1'],
             },
-            install: ['npm ci'],
+            install: ['yarn'],
             jobs: {
                 include: [
                     {
                         stage: 'test',
                         script: [
-                            'npm run prettier',
-                            'npm run tslint',
-                            'npm run build',
+                            'yarn run prettier',
+                            'yarn run tslint',
+                            'yarn run build',
                             ...(hasTests
-                                ? ['npm test', 'nyc report --reporter json', 'bash <(curl -s https://codecov.io/bash)']
+                                ? ['yarn test', 'nyc report --reporter json', 'bash <(curl -s https://codecov.io/bash)']
                                 : []),
                         ],
                     },
                     {
                         stage: 'release',
-                        script: ['npm run build', 'npm run semantic-release'],
+                        script: ['yarn run build', 'yarn run semantic-release'],
                     },
                 ],
             },
