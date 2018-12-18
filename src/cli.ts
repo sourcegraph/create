@@ -222,6 +222,7 @@ async function main(): Promise<void> {
         console.log('📄 Adding package.json')
         const packageJson: JsonSchemaForNpmPackageJsonFiles = {
             name: packageName,
+            description,
             version: '0.0.0-DEVELOPMENT',
             license: licenseName,
             repository: {
