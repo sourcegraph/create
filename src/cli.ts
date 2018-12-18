@@ -64,7 +64,7 @@ async function main(): Promise<void> {
     let packageName: string | undefined
     let description: string | undefined
     try {
-        ;({ packageName, description } = JSON.parse(await readFile('package.json', 'utf-8')))
+        ;({ name: packageName, description } = JSON.parse(await readFile('package.json', 'utf-8')))
     } catch (err) {
         if (err.code !== 'ENOENT') {
             throw err
