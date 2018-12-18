@@ -167,6 +167,7 @@ async function main(): Promise<void> {
                 module: 'esnext',
                 sourceMap: true,
                 declaration: true,
+                declarationMap: true,
                 outDir: 'dist',
                 rootDir: 'src',
                 esModuleInterop: true,
