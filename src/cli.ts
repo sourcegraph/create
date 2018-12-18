@@ -161,7 +161,7 @@ async function main(): Promise<void> {
         console.log('📄 tsconfig.json already exists, skipping creation')
     } else {
         const tsconfigJson: JsonSchemaForTheTypeScriptCompilersConfigurationFile = {
-            extends: './node_modules/@sourcegraph/tsconfig/tsconfig.json',
+            extends: '@sourcegraph/tsconfig',
             compilerOptions: {
                 target: 'es2016',
                 module: 'esnext',
