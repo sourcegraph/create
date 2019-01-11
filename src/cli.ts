@@ -238,6 +238,7 @@ async function main(): Promise<void> {
                 commitmsg: 'commitlint -e $GIT_PARAMS',
                 'semantic-release': 'semantic-release',
                 prettier: "prettier '**/{*.{js?(on),ts?(x),scss},.*.js?(on)}' --write --list-different",
+                'prettier-check': 'npm run prettier -- --write=false',
                 tslint: "tslint -c tslint.json -p tsconfig.json './src/*.ts?(x)' './*.ts?(x)'",
                 build: 'tsc -p .',
                 watch: 'tsc -p . -w',

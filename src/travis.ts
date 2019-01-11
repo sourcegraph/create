@@ -82,7 +82,7 @@ export async function initTravis({
                     {
                         stage: 'test',
                         script: [
-                            'yarn run prettier',
+                            'yarn run prettier-check',
                             'yarn run tslint',
                             'yarn run build',
                             ...(hasTests
