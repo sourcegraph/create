@@ -46,7 +46,7 @@
     "js-yaml": "^3.12.0",
     "mz": "^2.7.0",
     "npm-registry-client": "^8.6.0",
-    "request-promise": "^4.2.2",
+    "request-promise": "^4.2.4",
     "source-map-support": "^0.5.6"
   },
   "devDependencies": {
@@ -59,7 +59,7 @@
     "@types/inquirer": "0.0.44",
     "@types/js-yaml": "3.12.0",
     "@types/mz": "0.0.32",
-    "@types/request-promise": "4.1.42",
+    "@types/request-promise": "4.1.43",
     "husky": "^0.14.3",
     "json-schema-to-typescript": "^5.5.0",
     "prettier": "^1.16.4",
