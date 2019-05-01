@@ -62,7 +62,7 @@
     "@types/request-promise": "4.1.42",
     "husky": "^0.14.3",
     "json-schema-to-typescript": "^5.5.0",
-    "prettier": "^1.16.4",
+    "prettier": "^1.17.0",
     "semantic-release": "^15.9.3",
     "tslint": "^5.15.0",
     "typescript": "^3.2.2"
