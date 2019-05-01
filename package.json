@@ -25,10 +25,11 @@
   "scripts": {
     "tslint": "tslint -p tsconfig.json -c tslint.json 'src/**/*.ts'",
     "build": "tsc -p .",
-    "package-schema": "download http://json.schemastore.org/package | json2ts | prettier --parser typescript > src/package.ts",
-    "travis-schema": "download http://json.schemastore.org/travis | json2ts | prettier --parser typescript > src/travis.ts",
-    "tsconfig-schema": "download http://json.schemastore.org/tsconfig | json2ts | prettier --parser typescript > src/tsconfig.ts",
-    "tslint-schema": "download http://json.schemastore.org/tslint | json2ts | prettier --parser typescript > src/tslint.ts",
+    "package-schema": "download http://json.schemastore.org/package | json2ts | prettier --parser typescript > src/package-schema.ts",
+    "travis-schema": "download http://json.schemastore.org/travis | json2ts | prettier --parser typescript > src/travis-schema.ts",
+    "tsconfig-schema": "download http://json.schemastore.org/tsconfig | json2ts | prettier --parser typescript > src/tsconfig-schema.ts",
+    "tslint-schema": "download http://json.schemastore.org/tslint | json2ts | prettier --parser typescript > src/tslint-schema.ts",
+    "renovate-schema": "download http://json.schemastore.org/renovate | json2ts | prettier --parser typescript > src/renovate-schema.ts",
     "prettier": "prettier '**/{*.{js?(on),ts?(x),scss},.*.js?(on)}' --write --list-different",
     "prettier-check": "npm run prettier -- --write=false",
     "semantic-release": "semantic-release"
@@ -65,6 +66,7 @@
     "@types/js-yaml": "3.12.1",
     "@types/mz": "0.0.32",
     "@types/node": "11.13.8",
+    "download-cli": "^1.1.1",
     "husky": "^2.1.0",
     "json-schema-to-typescript": "^5.5.0",
     "prettier": "^1.17.0",
