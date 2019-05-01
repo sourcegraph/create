@@ -215,7 +215,10 @@ async function main(): Promise<void> {
     await writeFile('.prettierignore', ['package.json', 'package-lock.json', 'dist/', ''].join('\n'))
 
     console.log('📄 Adding .gitignore')
-    await writeFile('.gitignore', ['dist/', 'node_modules/', ...(hasTests ? ['coverage/'] : []), ''].join('\n'))
+    await writeFile(
+        '.gitignore',
+        ['dist/', 'node_modules/', ...(hasTests ? ['coverage/', '.nyc_output/'] : []), ''].join('\n')
+    )
 
     let packageJson: JsonSchemaForNpmPackageJsonFiles
     try {
@@ -283,17 +286,17 @@ async function main(): Promise<void> {
 
     console.log('📦 Installing dependencies')
     const dependencyNames = [
-            'prettier',
-            'typescript',
-            'tslint',
-            'husky',
-            'semantic-release',
-            '@commitlint/cli',
-            '@commitlint/config-conventional',
-            '@sourcegraph/tslint-config',
-            '@sourcegraph/tsconfig',
-            '@sourcegraph/prettierrc',
-            ...(hasTests ? ['mocha', 'nyc', 'ts-node', '@types/mocha', '@types/node'] : []),
+        'prettier',
+        'typescript',
+        'tslint',
+        'husky',
+        'semantic-release',
+        '@commitlint/cli',
+        '@commitlint/config-conventional',
+        '@sourcegraph/tslint-config',
+        '@sourcegraph/tsconfig',
+        '@sourcegraph/prettierrc',
+        ...(hasTests ? ['mocha', 'nyc', 'ts-node', '@types/mocha', '@types/node'] : []),
     ]
     const existingDependencyNames = new Set(Object.keys(packageJson.devDependencies || {}))
     // Skip adding dependencies if already added for perf
