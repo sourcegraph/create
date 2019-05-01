@@ -10,6 +10,7 @@ import { CodeCovRepo, createCodeCovClient, getCodeCovBadge } from './codecov'
 import { createGitHubClient } from './github'
 import { JsonSchemaForNpmPackageJsonFiles } from './package-schema'
 import * as prompt from './prompt'
+import { JsonSchemaForRenovateConfigFilesHttpsRenovatebotCom } from './renovate-schema'
 import { createTravisClient, initTravis } from './travis'
 import { JsonSchemaForTheTypeScriptCompilersConfigurationFile } from './tsconfig-schema'
 import { JsonSchemaForTheTsLintConfigurationFiles } from './tslint-schema'
@@ -229,6 +230,13 @@ async function main(): Promise<void> {
         '.gitignore',
         ['dist/', 'node_modules/', ...(hasTests ? ['coverage/', '.nyc_output/'] : []), ''].join('\n')
     )
+
+    console.log('📄 Adding renovate.json')
+    const renovateJson: JsonSchemaForRenovateConfigFilesHttpsRenovatebotCom = {
+        extends: ['github>sourcegraph/renovate-config'],
+        semanticCommits: true,
+    }
+    await writeFile('renovate.json', JSON.stringify(renovateJson, null, 2))
 
     let packageJson: JsonSchemaForNpmPackageJsonFiles
     try {
