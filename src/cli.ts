@@ -254,7 +254,7 @@ async function main(): Promise<void> {
             scripts: {
                 ...(hasTests ? { test: 'nyc mocha' } : {}),
                 'semantic-release': 'semantic-release',
-                prettier: "prettier '**/{*.{js?(on),ts?(x),scss},.*.js?(on)}' --write --list-different",
+                prettier: "prettier '**/*.{js?(on),ts?(x),scss,md,yml}' --write --list-different",
                 'prettier-check': 'npm run prettier -- --write=false',
                 tslint: "tslint -c tslint.json -p tsconfig.json './src/*.ts?(x)' './*.ts?(x)'",
                 build: 'tsc -p .',
@@ -395,7 +395,7 @@ async function main(): Promise<void> {
     }
 
     console.log('💄 Prettifying')
-    await exec('node_modules/.bin/prettier', ['**/{*.{js?(on),ts?(x),md},.*.js?(on)}', '--write'])
+    await exec('node_modules/.bin/prettier', ['**/*.{js?(on),ts?(x),md,yml}}', '--write'])
     console.log('✨ Done')
 
     setTimeout(() => process.exit(0), 100)
