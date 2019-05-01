@@ -1,13 +1,12 @@
+import got, { GotInstance, GotJSONFn } from 'got'
 import * as yaml from 'js-yaml'
 import { exists, writeFile } from 'mz/fs'
-import _request = require('request-promise')
 import { GitHubClient } from './github'
-const request = _request.defaults({ resolveWithFullResponse: true })
 
-export type BuildkiteClient = typeof request
+export type BuildkiteClient = GotInstance<GotJSONFn>
 
 export const createBuildkiteClient = ({ token }: { token: string }): BuildkiteClient =>
-    request.defaults({
+    got.extend({
         baseUrl: 'https://api.buildkite.com/v2/',
         json: true,
         headers: {

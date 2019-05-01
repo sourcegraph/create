@@ -1,7 +1,6 @@
-import _request = require('request-promise')
-const request = _request.defaults({ resolveWithFullResponse: true })
+import got, { GotInstance, GotJSONFn } from 'got'
 
-export type CodeCovClient = typeof request
+export type CodeCovClient = GotInstance<GotJSONFn>
 
 export interface CodeCovRepo {
     upload_token: string
@@ -9,7 +8,7 @@ export interface CodeCovRepo {
 }
 
 export const createCodeCovClient = ({ token }: { token: string }) =>
-    request.defaults({
+    got.extend({
         baseUrl: 'https://codecov.io/api/',
         json: true,
         headers: {
