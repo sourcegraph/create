@@ -217,11 +217,16 @@ async function main(): Promise<void> {
     console.log('📄 Adding .gitignore')
     await writeFile('.gitignore', ['dist/', 'node_modules/', ...(hasTests ? ['coverage/'] : []), ''].join('\n'))
 
-    if (await exists('package.json')) {
+    let packageJson: JsonSchemaForNpmPackageJsonFiles
+    try {
+        packageJson = JSON.parse(await readFile('package.json', 'utf-8'))
         console.log('📄 package.json already exists, skipping creation')
-    } else {
+    } catch (err) {
+        if (err.code !== 'ENOENT') {
+            throw err
+        }
         console.log('📄 Adding package.json')
-        const packageJson: JsonSchemaForNpmPackageJsonFiles = {
+        packageJson = {
             name: packageName,
             description,
             version: '0.0.0-DEVELOPMENT',
@@ -277,11 +282,7 @@ async function main(): Promise<void> {
     }
 
     console.log('📦 Installing dependencies')
-    await exec(
-        'yarn',
-        [
-            'add',
-            '--dev',
+    const dependencyNames = [
             'prettier',
             'typescript',
             'tslint',
@@ -293,9 +294,14 @@ async function main(): Promise<void> {
             '@sourcegraph/tsconfig',
             '@sourcegraph/prettierrc',
             ...(hasTests ? ['mocha', 'nyc', 'ts-node', '@types/mocha', '@types/node'] : []),
-        ],
-        { stdio: 'inherit' }
-    )
+    ]
+    const existingDependencyNames = new Set(Object.keys(packageJson.devDependencies || {}))
+    // Skip adding dependencies if already added for perf
+    if (dependencyNames.some(depName => !existingDependencyNames.has(depName))) {
+        await exec('yarn', ['add', '--dev', ...dependencyNames], { stdio: 'inherit' })
+    } else {
+        await exec('yarn', { stdio: 'inherit' })
+    }
 
     console.log('🔑 Fetching CodeCov repository tokens')
     const codeCovRepo: { repo: CodeCovRepo } = (await codeCovClient.get(`gh/sourcegraph/${repoName}`)).body
