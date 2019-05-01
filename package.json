@@ -65,6 +65,6 @@
     "prettier": "^1.17.0",
     "semantic-release": "^15.9.3",
     "tslint": "^5.16.0",
-    "typescript": "^3.2.2"
+    "typescript": "^3.4.5"
   }
 }
