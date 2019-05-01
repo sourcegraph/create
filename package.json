@@ -31,7 +31,6 @@
     "tslint-schema": "download http://json.schemastore.org/tslint | json2ts | prettier --parser typescript > src/tslint.ts",
     "prettier": "prettier '**/{*.{js?(on),ts?(x),scss},.*.js?(on)}' --write --list-different",
     "prettier-check": "npm run prettier -- --write=false",
-    "commitmsg": "commitlint -e $GIT_PARAMS",
     "semantic-release": "semantic-release"
   },
   "commitlint": {
@@ -66,5 +65,10 @@
     "semantic-release": "^15.9.3",
     "tslint": "^5.15.0",
     "typescript": "^3.2.2"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS"
+    }
   }
 }
