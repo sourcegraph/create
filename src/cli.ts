@@ -217,7 +217,12 @@ async function main(): Promise<void> {
     await writeFile('prettier.config.js', "module.exports = require('@sourcegraph/prettierrc')\n")
 
     console.log('📄 Adding .prettierignore')
-    await writeFile('.prettierignore', ['package.json', 'package-lock.json', 'dist/', ''].join('\n'))
+    await writeFile(
+        '.prettierignore',
+        ['package.json', 'package-lock.json', 'dist/', ...(hasTests ? ['.nyc_output/', 'coverage/'] : []), ''].join(
+            '\n'
+        )
+    )
 
     console.log('📄 Adding .gitignore')
     await writeFile(
