@@ -234,7 +234,7 @@ async function main(): Promise<void> {
             main: 'dist/index.js',
             types: 'dist/index.d.ts',
             scripts: {
-                ...(hasTests ? { test: 'mocha --require ts-node/register "src/**/*.test.ts"' } : {}),
+                ...(hasTests ? { test: 'nyc mocha' } : {}),
                 'semantic-release': 'semantic-release',
                 prettier: "prettier '**/{*.{js?(on),ts?(x),scss},.*.js?(on)}' --write --list-different",
                 'prettier-check': 'npm run prettier -- --write=false',
@@ -256,6 +256,10 @@ async function main(): Promise<void> {
                           include: ['src/**/*.ts?(x)'],
                           exclude: ['**/*.test.ts?(x)'],
                           extension: ['.tsx', '.ts'],
+                      },
+                      mocha: {
+                          require: 'ts-node/register',
+                          spec: 'src/**/*.test.ts',
                       },
                   }
                 : {}),
@@ -288,7 +292,7 @@ async function main(): Promise<void> {
             '@sourcegraph/tslint-config',
             '@sourcegraph/tsconfig',
             '@sourcegraph/prettierrc',
-            ...(hasTests ? ['mocha', 'nyc'] : []),
+            ...(hasTests ? ['mocha', 'nyc', 'ts-node', '@types/mocha', '@types/node'] : []),
         ],
         { stdio: 'inherit' }
     )
