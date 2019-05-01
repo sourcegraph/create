@@ -1,16 +1,15 @@
+import got, { GotInstance, GotJSONFn } from 'got'
 import * as yaml from 'js-yaml'
 import { exists } from 'mz/fs'
 import { writeFile } from 'mz/fs'
-import _request = require('request-promise')
 import { createSourcegraphBotGitHubToken, GitHubClient } from './github'
 import { createSourcegraphBotNpmToken } from './npm'
 import { JsonSchemaForTravisCiConfigurationFiles } from './travis-schema'
-const request = _request.defaults({ resolveWithFullResponse: true })
 
-export type TravisClient = typeof request
+export type TravisClient = GotInstance<GotJSONFn>
 
 export const createTravisClient = ({ token }: { token: string }) =>
-    request.defaults({
+    got.extend({
         baseUrl: 'https://api.travis-ci.org/',
         json: true,
         headers: {
@@ -28,7 +27,7 @@ const createTravisEnvVar = async ({
     repoName: string
     name: string
     value: string
-    travisClient: typeof request
+    travisClient: TravisClient
 }): Promise<void> => {
     await travisClient.post(`/repo/sourcegraph%2F${repoName}/env_vars`, {
         json: true,

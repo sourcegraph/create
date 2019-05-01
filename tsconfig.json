@@ -6,6 +6,7 @@
     "sourceMap": true,
     "declaration": true,
     "outDir": "dist",
-    "typeRoots": ["node_modules/@types", "types"]
+    "typeRoots": ["node_modules/@types"],
+    "esModuleInterop": true
   }
 }

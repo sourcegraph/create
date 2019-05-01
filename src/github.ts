@@ -1,11 +1,10 @@
-import _request = require('request-promise')
+import got, { GotInstance, GotJSONFn } from 'got'
 import * as prompt from './prompt'
-const request = _request.defaults({ resolveWithFullResponse: true })
 
-export type GitHubClient = typeof request
+export type GitHubClient = GotInstance<GotJSONFn>
 
 export const createGitHubClient = ({ token }: { token: string }) =>
-    request.defaults({
+    got.extend({
         baseUrl: 'https://api.github.com/',
         json: true,
         headers: {
