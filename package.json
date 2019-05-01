@@ -63,7 +63,7 @@
     "husky": "^0.14.3",
     "json-schema-to-typescript": "^5.5.0",
     "prettier": "^1.17.0",
-    "semantic-release": "^15.9.3",
+    "semantic-release": "^15.13.3",
     "tslint": "^5.16.0",
     "typescript": "^3.2.2"
   }
