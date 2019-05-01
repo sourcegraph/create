@@ -235,7 +235,6 @@ async function main(): Promise<void> {
             types: 'dist/index.d.ts',
             scripts: {
                 ...(hasTests ? { test: 'mocha --require ts-node/register "src/**/*.test.ts"' } : {}),
-                commitmsg: 'commitlint -e $GIT_PARAMS',
                 'semantic-release': 'semantic-release',
                 prettier: "prettier '**/{*.{js?(on),ts?(x),scss},.*.js?(on)}' --write --list-different",
                 'prettier-check': 'npm run prettier -- --write=false',
@@ -245,6 +244,11 @@ async function main(): Promise<void> {
             },
             commitlint: {
                 extends: ['@commitlint/config-conventional'],
+            },
+            husky: {
+                hooks: {
+                    'commit-msg': 'commitlint -e $HUSKY_GIT_PARAMS',
+                },
             },
             ...(hasTests
                 ? {
