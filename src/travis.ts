@@ -71,7 +71,7 @@ export async function initTravis({
     } else {
         const travisYaml: JsonSchemaForTravisCiConfigurationFiles = {
             language: 'node_js',
-            node_js: '10',
+            node_js: '12',
             cache: 'yarn',
             env: {
                 global: ['FORCE_COLOR=1'],
