@@ -160,14 +160,19 @@ async function main(): Promise<void> {
     if (await exists('tsconfig.json')) {
         console.log('📄 tsconfig.json already exists, skipping creation')
     } else {
+        const willRunInNode = await prompt.confirm(
+            'Will this package be used in NodeJS, or only in the browser? If the package runs only in the browser, TypeScript will be configured to output ES6 modules.'
+        )
         const tsconfigJson: JsonSchemaForTheTypeScriptCompilersConfigurationFile = {
             extends: '@sourcegraph/tsconfig',
             compilerOptions: {
-                target: 'es2016',
-                module: 'esnext',
+                target: 'es2018',
+                module: willRunInNode ? 'commonjs' : 'esnext',
+                moduleResolution: 'node',
                 sourceMap: true,
                 declaration: true,
                 declarationMap: true,
+                inlineSources: true,
                 outDir: 'dist',
                 rootDir: 'src',
                 esModuleInterop: true,
