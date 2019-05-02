@@ -65,7 +65,7 @@
     "@types/inquirer": "6.0.1",
     "@types/js-yaml": "3.12.1",
     "@types/mz": "0.0.32",
-    "@types/node": "11.13.8",
+    "@types/node": "11.13.9",
     "download-cli": "^1.1.1",
     "husky": "^2.1.0",
     "json-schema-to-typescript": "^5.5.0",
