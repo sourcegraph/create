@@ -1,13 +1,13 @@
 import got, { GotInstance, GotJSONFn } from 'got'
 
-export type CodeCovClient = GotInstance<GotJSONFn>
+export type CodecovClient = GotInstance<GotJSONFn>
 
-export interface CodeCovRepo {
+export interface CodecovRepo {
     upload_token: string
     image_token: string
 }
 
-export const createCodeCovClient = ({ token }: { token: string }) =>
+export const createCodecovClient = ({ token }: { token: string }) =>
     got.extend({
         baseUrl: 'https://codecov.io/api/',
         json: true,
@@ -16,11 +16,11 @@ export const createCodeCovClient = ({ token }: { token: string }) =>
         },
     })
 
-export const getCodeCovBadge = async ({
+export const getCodecovBadge = async ({
     repoName,
-    codeCovImageToken,
+    codecovImageToken,
 }: {
     repoName: string
-    codeCovImageToken: string
+    codecovImageToken: string
 }) =>
-    `[![codecov](https://codecov.io/gh/sourcegraph/${repoName}/branch/master/graph/badge.svg?token=${codeCovImageToken})](https://codecov.io/gh/sourcegraph/${repoName})`
+    `[![codecov](https://codecov.io/gh/sourcegraph/${repoName}/branch/master/graph/badge.svg?token=${codecovImageToken})](https://codecov.io/gh/sourcegraph/${repoName})`

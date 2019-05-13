@@ -17,13 +17,13 @@ export const createBuildkiteClient = ({ token }: { token: string }): BuildkiteCl
 export async function initBuildkite({
     hasTests,
     repoName,
-    codeCovUploadToken,
+    codecovUploadToken,
     githubClient,
     buildkiteClient,
 }: {
     hasTests: boolean
     repoName: string
-    codeCovUploadToken: string
+    codecovUploadToken: string
     githubClient: GitHubClient
     buildkiteClient: BuildkiteClient
 }): Promise<{ badgeUrl: string; webUrl: string }> {
@@ -69,7 +69,7 @@ export async function initBuildkite({
             },
         ],
         env: {
-            CODECOV_TOKEN: codeCovUploadToken,
+            CODECOV_TOKEN: codecovUploadToken,
         },
     }
 
