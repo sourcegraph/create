@@ -403,7 +403,7 @@ async function main(): Promise<void> {
     }
 
     console.log('💄 Prettifying')
-    await exec('node_modules/.bin/prettier', ['**/*.{js?(on),ts?(x),md,yml}}', '--write'])
+    await exec('node_modules/.bin/prettier', ['**/*.{js?(on),ts?(x),md,yml}', '--write'])
     console.log('✨ Done')
 
     setTimeout(() => process.exit(0), 100)
