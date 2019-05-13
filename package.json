@@ -21,7 +21,7 @@
     "bootstrap",
     "boilerplate"
   ],
-  "license": "UNLICENSED",
+  "license": "Apache-2.0",
   "scripts": {
     "tslint": "tslint -p tsconfig.json -c tslint.json 'src/**/*.ts'",
     "build": "tsc -p .",

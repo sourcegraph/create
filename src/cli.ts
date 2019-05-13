@@ -140,12 +140,12 @@ async function main(): Promise<void> {
 
     enum LicenseName {
         Unlicensed = 'UNLICENSED',
-        Mit = 'MIT',
+        Apache2 = 'Apache-2.0',
     }
     const licenseName = await prompt.choices({
         message: 'License?',
-        choices: ['UNLICENSED', 'MIT'],
-        default: { [Visibility.Private]: LicenseName.Unlicensed, [Visibility.Public]: LicenseName.Mit }[visibility],
+        choices: [LicenseName.Unlicensed, LicenseName.Apache2],
+        default: { [Visibility.Private]: LicenseName.Unlicensed, [Visibility.Public]: LicenseName.Apache2 }[visibility],
     })
     if (licenseName !== 'UNLICENSED') {
         console.log('📄 Adding LICENSE')
