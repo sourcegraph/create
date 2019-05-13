@@ -6,7 +6,7 @@ import exec = require('execa')
 import { exists, mkdir, readFile, writeFile } from 'mz/fs'
 import * as path from 'path'
 import { createBuildkiteClient, initBuildkite } from './buildkite'
-import { CodeCovRepo, createCodeCovClient, getCodeCovBadge } from './codecov'
+import { CodecovRepo, createCodecovClient, getCodecovBadge } from './codecov'
 import { createGitHubClient } from './github'
 import { JsonSchemaForNpmPackageJsonFiles } from './package-schema'
 import * as prompt from './prompt'
@@ -32,7 +32,7 @@ async function main(): Promise<void> {
         )
     }
     console.log('Using CODECOV_TOKEN from env var')
-    const codeCovClient = createCodeCovClient({ token: process.env.CODECOV_TOKEN })
+    const codecovClient = createCodecovClient({ token: process.env.CODECOV_TOKEN })
 
     if (!process.env.BUILDKITE_TOKEN) {
         throw createCLIError(
@@ -324,31 +324,31 @@ async function main(): Promise<void> {
         await exec('yarn', { stdio: 'inherit' })
     }
 
-    console.log('🔑 Fetching CodeCov repository tokens')
-    const codeCovRepo: { repo: CodeCovRepo } = (await codeCovClient.get(`gh/sourcegraph/${repoName}`)).body
-    if (!codeCovRepo.repo || !codeCovRepo.repo.upload_token) {
+    console.log('🔑 Fetching Codecov repository tokens')
+    const codecovRepo: { repo: CodecovRepo } = (await codecovClient.get(`gh/sourcegraph/${repoName}`)).body
+    if (!codecovRepo.repo || !codecovRepo.repo.upload_token) {
         throw Object.assign(
-            new Error(`No CodeCov upload token returned by CodeCov for https://codecov.io/gh/sourcegraph/${repoName}`),
-            { codeCovRepo }
+            new Error(`No Codecov upload token returned by Codecov for https://codecov.io/gh/sourcegraph/${repoName}`),
+            { codecovRepo }
         )
     }
-    const codeCovUploadToken = codeCovRepo.repo.upload_token
-    if (!codeCovRepo.repo.image_token) {
+    const codecovUploadToken = codecovRepo.repo.upload_token
+    if (!codecovRepo.repo.image_token) {
         throw Object.assign(
             new Error(
-                `No CodeCov graphing image token returned by CodeCov for https://codecov.io/gh/sourcegraph/${repoName}`
+                `No Codecov graphing image token returned by Codecov for https://codecov.io/gh/sourcegraph/${repoName}`
             ),
-            { codeCovRepo }
+            { codecovRepo }
         )
     }
-    const codeCovImageToken = codeCovRepo.repo.image_token
+    const codecovImageToken = codecovRepo.repo.image_token
 
     let buildBadge: string
     if (visibility === Visibility.Private) {
         const { badgeUrl, webUrl } = await initBuildkite({
             hasTests,
             repoName,
-            codeCovUploadToken,
+            codecovUploadToken,
             githubClient,
             buildkiteClient,
         })
@@ -372,7 +372,7 @@ async function main(): Promise<void> {
                   ]
                 : []),
             buildBadge,
-            ...(hasTests ? [await getCodeCovBadge({ repoName, codeCovImageToken })] : []),
+            ...(hasTests ? [await getCodecovBadge({ repoName, codecovImageToken })] : []),
             '[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)',
             '[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)',
             '',
