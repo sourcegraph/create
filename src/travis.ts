@@ -1,3 +1,4 @@
+import delay from 'delay'
 import got, { GotInstance, GotJSONFn } from 'got'
 import * as yaml from 'js-yaml'
 import { exists } from 'mz/fs'
@@ -114,11 +115,22 @@ export async function initTravis({
     await travisClient.post(`user/${travisUser.id}/sync`)
     while ((await getCurrentTravisUser({ travisClient })).is_syncing) {
         console.log('Waiting for sync to finish...')
-        await new Promise<void>(resolve => setTimeout(resolve, 1000))
+        await delay(1000)
     }
 
-    console.log(`Activating repository at https://travis-ci.org/sourcegraph/${repoName}`)
-    await travisClient.post(`/repo/sourcegraph%2F${repoName}/activate`)
+    // Retry activating while repository is not found (404)
+    while (true) {
+        try {
+            await delay(1000)
+            console.log(`Activating repository at https://travis-ci.org/sourcegraph/${repoName}`)
+            await travisClient.post(`/repo/sourcegraph%2F${repoName}/activate`)
+            break
+        } catch (err) {
+            if (err.status !== 404) {
+                throw err
+            }
+        }
+    }
 
     const envVars = (await travisClient.get(`/repo/sourcegraph%2F${repoName}/env_vars`)).body
     if (envVars.env_vars.some((envVar: any) => envVar.name === 'NPM_TOKEN')) {

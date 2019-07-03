@@ -46,6 +46,7 @@
   },
   "dependencies": {
     "chalk": "^2.4.1",
+    "delay": "^4.3.0",
     "execa": "^1.0.0",
     "got": "^9.6.0",
     "inquirer": "^6.3.1",
