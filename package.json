@@ -60,7 +60,7 @@
     "@commitlint/config-conventional": "^8.1.0",
     "@sourcegraph/prettierrc": "^2.2.0",
     "@sourcegraph/tsconfig": "^4.0.0",
-    "@sourcegraph/tslint-config": "^12.3.1",
+    "@sourcegraph/tslint-config": "^14.0.2",
     "@types/execa": "0.9.0",
     "@types/got": "9.6.7",
     "@types/inquirer": "6.0.3",
