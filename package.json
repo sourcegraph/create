@@ -53,6 +53,7 @@
     "got": "^9.6.0",
     "inquirer": "^6.3.1",
     "js-yaml": "^3.13.1",
+    "mkdirp-promise": "^5.0.1",
     "mz": "^2.7.0",
     "npm-registry-client": "^8.6.0",
     "source-map-support": "^0.5.12"
@@ -66,6 +67,7 @@
     "@types/got": "9.6.8",
     "@types/inquirer": "6.0.3",
     "@types/js-yaml": "3.12.1",
+    "@types/mkdirp-promise": "^5.0.0",
     "@types/mz": "0.0.32",
     "@types/node": "11.13.9",
     "download-cli": "^1.1.1",

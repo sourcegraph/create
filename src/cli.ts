@@ -14,6 +14,7 @@ import { JsonSchemaForRenovateConfigFilesHttpsRenovatebotCom } from './renovate-
 import { createTravisClient, initTravis } from './travis'
 import { JsonSchemaForTheTypeScriptCompilersConfigurationFile } from './tsconfig-schema'
 import { JSONSchemaForESLintConfigurationFiles } from './eslintrc-schema'
+import mkdirp from 'mkdirp-promise'
 
 const createCLIError = (message: string): Error => Object.assign(new Error(message), { showStack: false })
 
@@ -193,6 +194,31 @@ async function main(): Promise<void> {
             },
         }
         await writeFile('.eslintrc.json', JSON.stringify(eslintJson, null, 2))
+    }
+
+    if (await exists('.vscode/settings.json')) {
+        console.log('📄 .vscode/settings.json already exists, skipping creation')
+    } else {
+        console.log('📄 Adding .vscode/settings.json')
+        const vscodeSettings = {
+            'editor.formatOnSave': true,
+            'typescript.format.semicolons': 'remove',
+            'eslint.autoFixOnSave': true,
+            'eslint.validate': [
+                'javascript',
+                'javascriptreact',
+                {
+                    language: 'typescript',
+                    autoFix: true,
+                },
+                {
+                    language: 'typescriptreact',
+                    autoFix: true,
+                },
+            ],
+        }
+        await mkdirp('.vscode')
+        await writeFile('.vscode/settings.json', JSON.stringify(vscodeSettings, null, 2))
     }
 
     console.log('📄 Adding .editorconfig')
