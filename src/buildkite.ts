@@ -41,7 +41,7 @@ export async function initBuildkite({
                     command: [
                         'npm ci',
                         'npm run prettier',
-                        'npm run tslint',
+                        'npm run eslint',
                         'npm run build',
                         ...(hasTests ? ['npm test', 'bash <(curl -s https://codecov.io/bash)'] : []),
                     ].join('\n'),

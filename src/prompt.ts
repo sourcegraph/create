@@ -24,7 +24,7 @@ export async function password(question: string | InputOptions): Promise<string>
 }
 
 interface ChoicesOptions<T extends string> extends BaseOptions<T> {
-    choices: ReadonlyArray<T>
+    choices: readonly T[]
 }
 
 export async function choices<T extends string>(question: ChoicesOptions<T>): Promise<T> {

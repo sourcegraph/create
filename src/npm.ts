@@ -1,5 +1,5 @@
 // @ts-ignore
-import NpmRegistryClient = require('npm-registry-client')
+import NpmRegistryClient from 'npm-registry-client'
 import * as prompt from './prompt'
 
 export async function createSourcegraphBotNpmToken(): Promise<string> {
@@ -11,7 +11,7 @@ export async function createSourcegraphBotNpmToken(): Promise<string> {
     const otp = await prompt.input('@sourcegraph-bot npm 2FA code')
 
     const body = {
-        _id: `org.couchdb.user:sourcegraph-bot`,
+        _id: 'org.couchdb.user:sourcegraph-bot',
         name: 'sourcegraph-bot',
         password,
         type: 'user',
@@ -33,7 +33,7 @@ export async function createSourcegraphBotNpmToken(): Promise<string> {
         )
     )
     if (!response.token) {
-        throw Object.assign(new Error(`Could not get a token from npm`), { response })
+        throw Object.assign(new Error('Could not get a token from npm'), { response })
     }
 
     console.log('🔑 Created @sourcegraph-bot npm token')

@@ -1,15 +1,14 @@
 import delay from 'delay'
 import got, { GotInstance, GotJSONFn } from 'got'
 import * as yaml from 'js-yaml'
-import { exists } from 'mz/fs'
-import { writeFile } from 'mz/fs'
+import { exists, writeFile } from 'mz/fs'
 import { createSourcegraphBotGitHubToken, GitHubClient } from './github'
 import { createSourcegraphBotNpmToken } from './npm'
 import { JsonSchemaForTravisCiConfigurationFiles } from './travis-schema'
 
 export type TravisClient = GotInstance<GotJSONFn>
 
-export const createTravisClient = ({ token }: { token: string }) =>
+export const createTravisClient = ({ token }: { token: string }): TravisClient =>
     got.extend({
         baseUrl: 'https://api.travis-ci.org/',
         json: true,
@@ -83,7 +82,7 @@ export async function initTravis({
                         stage: 'test',
                         script: [
                             'yarn run prettier-check',
-                            'yarn run tslint',
+                            'yarn run eslint',
                             'yarn run build',
                             ...(hasTests
                                 ? ['yarn test', 'nyc report --reporter json', 'bash <(curl -s https://codecov.io/bash)']

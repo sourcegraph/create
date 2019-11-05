@@ -7,7 +7,7 @@ export interface CodecovRepo {
     image_token: string
 }
 
-export const createCodecovClient = ({ token }: { token: string }) =>
+export const createCodecovClient = ({ token }: { token: string }): CodecovClient =>
     got.extend({
         baseUrl: 'https://codecov.io/api/',
         json: true,
@@ -16,11 +16,11 @@ export const createCodecovClient = ({ token }: { token: string }) =>
         },
     })
 
-export const getCodecovBadge = async ({
+export const getCodecovBadge = ({
     repoName,
     codecovImageToken,
 }: {
     repoName: string
     codecovImageToken: string
-}) =>
+}): string =>
     `[![codecov](https://codecov.io/gh/sourcegraph/${repoName}/branch/master/graph/badge.svg?token=${codecovImageToken})](https://codecov.io/gh/sourcegraph/${repoName})`

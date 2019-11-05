@@ -3,7 +3,7 @@ import * as prompt from './prompt'
 
 export type GitHubClient = GotInstance<GotJSONFn>
 
-export const createGitHubClient = ({ token }: { token: string }) =>
+export const createGitHubClient = ({ token }: { token: string }): GitHubClient =>
     got.extend({
         baseUrl: 'https://api.github.com/',
         json: true,

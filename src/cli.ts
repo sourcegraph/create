@@ -2,7 +2,7 @@
 import 'source-map-support/register'
 
 import chalk from 'chalk'
-import exec = require('execa')
+import exec from 'execa'
 import { exists, mkdir, readFile, writeFile } from 'mz/fs'
 import * as path from 'path'
 import { createBuildkiteClient, initBuildkite } from './buildkite'
@@ -13,11 +13,9 @@ import * as prompt from './prompt'
 import { JsonSchemaForRenovateConfigFilesHttpsRenovatebotCom } from './renovate-schema'
 import { createTravisClient, initTravis } from './travis'
 import { JsonSchemaForTheTypeScriptCompilersConfigurationFile } from './tsconfig-schema'
-import { JsonSchemaForTheTsLintConfigurationFiles } from './tslint-schema'
+import { JSONSchemaForESLintConfigurationFiles } from './eslintrc-schema'
 
-const createCLIError = (message: string) => {
-    throw Object.assign(new Error(message), { showStack: false })
-}
+const createCLIError = (message: string): Error => Object.assign(new Error(message), { showStack: false })
 
 async function main(): Promise<void> {
     if (!process.env.GITHUB_TOKEN) {
@@ -99,7 +97,7 @@ async function main(): Promise<void> {
     if (!(await exec('git', ['remote'])).stdout) {
         repoName = await prompt.input({ message: 'Repository name', default: repoName })
         try {
-            await githubClient.post(`orgs/sourcegraph/repos`, {
+            await githubClient.post('orgs/sourcegraph/repos', {
                 body: {
                     name: repoName,
                     private: visibility === Visibility.Private,
@@ -184,14 +182,17 @@ async function main(): Promise<void> {
         await writeFile('tsconfig.json', JSON.stringify(tsconfigJson, null, 2))
     }
 
-    if (await exists('tslint.json')) {
-        console.log('📄 tslint.json already exists, skipping creation')
+    if (await exists('.eslintrc.json')) {
+        console.log('📄 .eslintrc.json already exists, skipping creation')
     } else {
-        console.log('📄 Adding tslint.json')
-        const tslintJson: JsonSchemaForTheTsLintConfigurationFiles = {
-            extends: ['@sourcegraph/tslint-config'],
+        console.log('📄 Adding .eslintrc.json')
+        const eslintJson: JSONSchemaForESLintConfigurationFiles = {
+            extends: ['@sourcegraph/eslint-config'],
+            parserOptions: {
+                project: 'tsconfig.json',
+            },
         }
-        await writeFile('tslint.json', JSON.stringify(tslintJson, null, 2))
+        await writeFile('.eslintrc.json', JSON.stringify(eslintJson, null, 2))
     }
 
     console.log('📄 Adding .editorconfig')
@@ -264,7 +265,7 @@ async function main(): Promise<void> {
                 'semantic-release': 'semantic-release',
                 prettier: "prettier '**/*.{js?(on),ts?(x),scss,md,yml}' --write --list-different",
                 'prettier-check': 'npm run prettier -- --write=false',
-                tslint: "tslint -c tslint.json -p tsconfig.json './src/*.ts?(x)' './*.ts?(x)'",
+                eslint: "eslint './src/*.ts?(x)' './*.ts?(x)'",
                 build: 'tsc -p .',
                 watch: 'tsc -p . -w',
             },
@@ -306,12 +307,12 @@ async function main(): Promise<void> {
     const dependencyNames = [
         'prettier',
         'typescript',
-        'tslint',
+        'eslint',
         'husky',
         'semantic-release',
         '@commitlint/cli',
         '@commitlint/config-conventional',
-        '@sourcegraph/tslint-config',
+        '@sourcegraph/eslint-config',
         '@sourcegraph/tsconfig',
         '@sourcegraph/prettierrc',
         ...(hasTests ? ['mocha', 'nyc', 'ts-node', '@types/mocha', '@types/node'] : []),
@@ -372,7 +373,7 @@ async function main(): Promise<void> {
                   ]
                 : []),
             buildBadge,
-            ...(hasTests ? [await getCodecovBadge({ repoName, codecovImageToken })] : []),
+            ...(hasTests ? [getCodecovBadge({ repoName, codecovImageToken })] : []),
             '[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)',
             '[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)',
             '',

@@ -11,7 +11,7 @@ jobs:
     - stage: test
       script:
         - yarn run prettier-check
-        - yarn run tslint
+        - yarn run eslint
         - yarn run build
     - stage: release
       script:

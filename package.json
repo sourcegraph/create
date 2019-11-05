@@ -23,12 +23,12 @@
   ],
   "license": "Apache-2.0",
   "scripts": {
-    "tslint": "tslint -p tsconfig.json -c tslint.json 'src/**/*.ts'",
+    "eslint": "eslint 'src/**/*.ts'",
     "build": "tsc -p .",
     "package-schema": "download http://json.schemastore.org/package | json2ts | prettier --parser typescript > src/package-schema.ts",
     "travis-schema": "download http://json.schemastore.org/travis | json2ts | prettier --parser typescript > src/travis-schema.ts",
     "tsconfig-schema": "download http://json.schemastore.org/tsconfig | json2ts | prettier --parser typescript > src/tsconfig-schema.ts",
-    "tslint-schema": "download http://json.schemastore.org/tslint | json2ts | prettier --parser typescript > src/tslint-schema.ts",
+    "eslintrc-schema": "download http://json.schemastore.org/eslintrc | json2ts | prettier --parser typescript > src/eslintrc-schema.ts",
     "renovate-schema": "download http://json.schemastore.org/renovate | json2ts | prettier --parser typescript > src/renovate-schema.ts",
     "prettier": "prettier '**/{*.{js?(on),ts?(x),scss},.*.js?(on)}' --write --list-different",
     "prettier-check": "npm run prettier -- --write=false",
@@ -45,8 +45,10 @@
     }
   },
   "dependencies": {
+    "@sourcegraph/eslint-config": "^0.3.1",
     "chalk": "^2.4.1",
     "delay": "^4.3.0",
+    "eslint": "^6.6.0",
     "execa": "^1.0.0",
     "got": "^9.6.0",
     "inquirer": "^6.3.1",
@@ -60,7 +62,6 @@
     "@commitlint/config-conventional": "^8.2.0",
     "@sourcegraph/prettierrc": "^2.2.0",
     "@sourcegraph/tsconfig": "^4.0.0",
-    "@sourcegraph/tslint-config": "^12.3.1",
     "@types/execa": "0.9.0",
     "@types/got": "9.6.8",
     "@types/inquirer": "6.0.3",
@@ -69,10 +70,9 @@
     "@types/node": "11.13.9",
     "download-cli": "^1.1.1",
     "husky": "^2.1.0",
-    "json-schema-to-typescript": "^5.5.0",
+    "json-schema-to-typescript": "^7.1.0",
     "prettier": "^1.18.2",
     "semantic-release": "^15.13.3",
-    "tslint": "^5.20.0",
     "typescript": "^3.4.5"
   }
 }
