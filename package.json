@@ -67,7 +67,7 @@
     "@types/got": "9.6.8",
     "@types/inquirer": "6.0.3",
     "@types/js-yaml": "3.12.1",
-    "@types/mkdirp-promise": "^5.0.0",
+    "@types/mkdirp-promise": "5.0.0",
     "@types/mz": "0.0.32",
     "@types/node": "11.13.9",
     "download-cli": "^1.1.1",
