@@ -1,0 +1,5 @@
+* @sourcegraph/web
+
+# Configured through Renovate
+package.json
+yarn.lock
