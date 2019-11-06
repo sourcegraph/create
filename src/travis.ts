@@ -22,11 +22,13 @@ const createTravisEnvVar = async ({
     repoName,
     name,
     value,
+    branch,
     travisClient,
 }: {
     repoName: string
     name: string
     value: string
+    branch?: string
     travisClient: TravisClient
 }): Promise<void> => {
     await travisClient.post(`/repo/sourcegraph%2F${repoName}/env_vars`, {
@@ -35,6 +37,7 @@ const createTravisEnvVar = async ({
             'env_var.name': name,
             'env_var.value': value,
             'env_var.public': false,
+            'env_var.branch': branch,
         },
     })
 }
@@ -137,7 +140,7 @@ export async function initTravis({
     } else {
         const npmToken = await createSourcegraphBotNpmToken()
         console.log('🔑 Setting NPM_TOKEN env var in Travis')
-        await createTravisEnvVar({ repoName, name: 'NPM_TOKEN', value: npmToken, travisClient })
+        await createTravisEnvVar({ repoName, name: 'NPM_TOKEN', value: npmToken, branch: 'master', travisClient })
     }
 
     if (envVars.env_vars.some((envVar: any) => envVar.name === 'GITHUB_TOKEN')) {
@@ -145,6 +148,6 @@ export async function initTravis({
     } else {
         const githubToken = await createSourcegraphBotGitHubToken({ repoName, githubClient })
         console.log('🔑 Setting GITHUB_TOKEN env var in Travis')
-        await createTravisEnvVar({ repoName, name: 'GITHUB_TOKEN', value: githubToken, travisClient })
+        await createTravisEnvVar({ repoName, name: 'GITHUB_TOKEN', value: githubToken, branch: 'master', travisClient })
     }
 }
