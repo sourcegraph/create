@@ -3,7 +3,7 @@ node_js: '10'
 cache: yarn
 env:
   global:
-    - FORCE_COLOR=1
+    - FORCE_COLOR=3
 install:
   - yarn
 jobs:

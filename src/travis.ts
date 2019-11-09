@@ -76,7 +76,7 @@ export async function initTravis({
             node_js: '12',
             cache: 'yarn',
             env: {
-                global: ['FORCE_COLOR=1'],
+                global: ['FORCE_COLOR=3'],
             },
             install: ['yarn'],
             jobs: {

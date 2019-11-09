@@ -33,7 +33,7 @@ export async function initBuildkite({
     } else {
         const buildkiteYaml = {
             env: {
-                FORCE_COLOR: 1,
+                FORCE_COLOR: 3,
             },
             steps: [
                 {
