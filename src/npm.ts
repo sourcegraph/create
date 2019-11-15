@@ -1,4 +1,3 @@
-// @ts-ignore
 import NpmRegistryClient from 'npm-registry-client'
 import * as prompt from './prompt'
 
