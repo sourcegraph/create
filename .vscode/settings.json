@@ -8,11 +8,11 @@
     "javascriptreact",
     {
       "language": "typescript",
-      "autoFix": true
+      "autoFix": true,
     },
     {
       "language": "typescriptreact",
-      "autoFix": true
-    }
-  ]
+      "autoFix": true,
+    },
+  ],
 }
