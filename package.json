@@ -56,7 +56,7 @@
     "mkdirp-promise": "^5.0.1",
     "mz": "^2.7.0",
     "npm-registry-client": "^8.6.0",
-    "source-map-support": "^0.5.12"
+    "source-map-support": "^0.5.16"
   },
   "devDependencies": {
     "@commitlint/cli": "^8.2.0",
