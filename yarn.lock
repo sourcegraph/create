@@ -288,11 +288,6 @@
     eslint-plugin-react "^7.16.0"
     eslint-plugin-react-hooks "^2.3.0"
 
-"@sourcegraph/prettierrc@^2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@sourcegraph/prettierrc/-/prettierrc-2.2.0.tgz#af4a6fcd465b0a39a07ffbd8f2d3414d01e603e8"
-  integrity sha512-kRdHxdAppxYnN7qAQjNTyuG05pjYHFtEUquZauXVXBeaGB4sye3uSkb8wgi34jeaUHG/gWp2f5hQgCCBMizjjA==
-
 "@sourcegraph/prettierrc@^3.0.1":
   version "3.0.1"
   resolved "https://registry.npmjs.org/@sourcegraph/prettierrc/-/prettierrc-3.0.1.tgz#e1db0046dca3c5e770d0f2ac68bbd794fee37138"
