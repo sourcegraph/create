@@ -45,7 +45,7 @@
     }
   },
   "dependencies": {
-    "@sourcegraph/eslint-config": "^0.4.8",
+    "@sourcegraph/eslint-config": "^0.5.0",
     "chalk": "^2.4.1",
     "delay": "^4.3.0",
     "eslint": "^6.7.2",
