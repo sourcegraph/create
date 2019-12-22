@@ -327,7 +327,8 @@ export interface CompilerOptionsDefinition {
             | 'es2018.regexp'
             | 'es2018.intl'
             | 'esnext.array'
-            | 'esnext.asynciterable')[]
+            | 'esnext.asynciterable'
+        )[]
         /**
          * Enable strict null checks. Requires TypeScript version 2.0 or later.
          */

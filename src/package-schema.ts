@@ -14,7 +14,8 @@ export type JsonSchemaForNpmPackageJsonFiles = CoreProperties &
         | {
               bundledDependencies?: BundledDependency
               [k: string]: any
-          })
+          }
+    )
 /**
  * A person who has been involved in creating or maintaining this package
  */
