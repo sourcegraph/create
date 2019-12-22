@@ -343,7 +343,7 @@ async function main(): Promise<void> {
         '@sourcegraph/prettierrc',
         ...(hasTests ? ['mocha', 'nyc', 'ts-node', '@types/mocha', '@types/node'] : []),
     ]
-    const existingDependencyNames = new Set(Object.keys(packageJson.devDependencies || {}))
+    const existingDependencyNames = new Set(Object.keys(packageJson.devDependencies ?? {}))
     // Skip adding dependencies if already added for perf
     if (dependencyNames.some(depName => !existingDependencyNames.has(depName))) {
         await exec('yarn', ['add', '--dev', ...dependencyNames], { stdio: 'inherit' })
