@@ -75,6 +75,6 @@
     "json-schema-to-typescript": "^7.1.0",
     "prettier": "^1.18.2",
     "semantic-release": "^15.13.31",
-    "typescript": "^3.7.3"
+    "typescript": "^3.7.4"
   }
 }
