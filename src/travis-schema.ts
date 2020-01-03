@@ -75,7 +75,8 @@ export type JsonSchemaForTravisCiConfigurationFiles = Job & {
                * Specifies a condition for the stage
                */
               if?: string
-          })[]
+          }
+    )[]
     [k: string]: any
 }
 export type PossiblySecretString =
@@ -185,7 +186,8 @@ export type Deployment = {
     | {
           provider: string
           [k: string]: any
-      })
+      }
+)
 /**
  * Your account name, token and optional channel
  */
@@ -347,7 +349,8 @@ export interface Job {
                        */
                       key_url?: string
                   }
-                | string)[]
+                | string
+            )[]
             /**
              * To install packages from the package whitelist before your custom build steps
              */

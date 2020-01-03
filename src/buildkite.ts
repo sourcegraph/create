@@ -75,10 +75,12 @@ export async function initBuildkite({
 
     let pipeline: { provider: { webhook_url: string }; badge_url: string; web_url: string }
     try {
-        pipeline = (await buildkiteClient.post('organizations/sourcegraph/pipelines', {
-            body: buildkitePipeline,
-            json: true,
-        })).body
+        pipeline = (
+            await buildkiteClient.post('organizations/sourcegraph/pipelines', {
+                body: buildkitePipeline,
+                json: true,
+            })
+        ).body
     } catch (err) {
         if (
             err.error &&
