@@ -59,8 +59,8 @@
     "source-map-support": "^0.5.16"
   },
   "devDependencies": {
-    "@commitlint/cli": "^8.3.3",
-    "@commitlint/config-conventional": "^8.3.3",
+    "@commitlint/cli": "^8.3.4",
+    "@commitlint/config-conventional": "^8.3.4",
     "@sourcegraph/prettierrc": "^3.0.1",
     "@sourcegraph/tsconfig": "^4.0.0",
     "@types/execa": "0.9.0",
