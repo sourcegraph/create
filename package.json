@@ -51,7 +51,7 @@
     "eslint": "^6.7.2",
     "execa": "^3.4.0",
     "got": "^9.6.0",
-    "inquirer": "^7.0.0",
+    "inquirer": "^7.1.0",
     "js-yaml": "^3.13.1",
     "mkdirp-promise": "^5.0.1",
     "mz": "^2.7.0",
