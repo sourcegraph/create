@@ -15,6 +15,7 @@ import { createTravisClient, initTravis } from './travis'
 import { JsonSchemaForTheTypeScriptCompilersConfigurationFile } from './tsconfig-schema'
 import { JSONSchemaForESLintConfigurationFiles } from './eslintrc-schema'
 import mkdirp from 'mkdirp-promise'
+import { HTTPError } from 'got'
 
 const createCLIError = (message: string): Error => Object.assign(new Error(message), { showStack: false })
 
@@ -99,7 +100,7 @@ async function main(): Promise<void> {
         repoName = await prompt.input({ message: 'Repository name', default: repoName })
         try {
             await githubClient.post('orgs/sourcegraph/repos', {
-                body: {
+                json: {
                     name: repoName,
                     private: visibility === Visibility.Private,
                     description,
@@ -111,11 +112,13 @@ async function main(): Promise<void> {
             console.log(`📘 Created https://github.com/sourcegraph/${repoName}`)
         } catch (err) {
             if (
-                err.error &&
-                Array.isArray(err.error.errors) &&
-                err.error.errors.some(
+                err instanceof HTTPError &&
+                (err.response.body as any)?.errors?.some?.(
                     (err: any) =>
-                        err.resource === 'Repository' && err.field === 'name' && /already exists/i.test(err.message)
+                        err?.resource === 'Repository' &&
+                        err?.field === 'name' &&
+                        typeof err?.message === 'string' &&
+                        /already exists/i.test(err.message)
                 )
             ) {
                 console.log(
@@ -132,7 +135,7 @@ async function main(): Promise<void> {
     console.log('🔑 Giving all FTTs admin access')
     // FTTs, see https://api.github.com/orgs/sourcegraph/teams
     await githubClient.put(`/teams/626894/repos/sourcegraph/${repoName}`, {
-        body: {
+        json: {
             permission: 'admin',
         },
     })
@@ -148,9 +151,12 @@ async function main(): Promise<void> {
     })
     if (licenseName !== 'UNLICENSED') {
         console.log('📄 Adding LICENSE')
-        const license = (await githubClient.get(`licenses/${licenseName}`)).body
+        const license = await githubClient.get<{ body: string }>(`licenses/${licenseName}`, {
+            responseType: 'json',
+            resolveBodyOnly: true,
+        })
         const licenseText = license.body
-            .replace(/\[year\]/g, new Date().getFullYear())
+            .replace(/\[year\]/g, new Date().getFullYear().toString())
             .replace(/\[fullname\]/g, 'Sourcegraph')
         await writeFile('LICENSE', licenseText)
     }
@@ -352,7 +358,10 @@ async function main(): Promise<void> {
     }
 
     console.log('🔑 Fetching Codecov repository tokens')
-    const codecovRepo: { repo: CodecovRepo } = (await codecovClient.get(`gh/sourcegraph/${repoName}`)).body
+    const codecovRepo = await codecovClient.get<{ repo: CodecovRepo }>(`gh/sourcegraph/${repoName}`, {
+        responseType: 'json',
+        resolveBodyOnly: true,
+    })
     if (!codecovRepo.repo || !codecovRepo.repo.upload_token) {
         throw Object.assign(
             new Error(`No Codecov upload token returned by Codecov for https://codecov.io/gh/sourcegraph/${repoName}`),

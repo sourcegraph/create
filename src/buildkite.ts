@@ -1,18 +1,23 @@
-import got, { GotInstance, GotJSONFn } from 'got'
+import got, { Got, HTTPError } from 'got'
 import * as yaml from 'js-yaml'
 import { exists, writeFile } from 'mz/fs'
 import { GitHubClient } from './github'
 
-export type BuildkiteClient = GotInstance<GotJSONFn>
+export type BuildkiteClient = Got
 
 export const createBuildkiteClient = ({ token }: { token: string }): BuildkiteClient =>
     got.extend({
-        baseUrl: 'https://api.buildkite.com/v2/',
-        json: true,
+        prefixUrl: 'https://api.buildkite.com/v2/',
         headers: {
             Authorization: 'Bearer ' + token,
         },
     })
+
+interface BuildkitePipeline {
+    provider: { webhook_url: string }
+    badge_url: string
+    web_url: string
+}
 
 export async function initBuildkite({
     hasTests,
@@ -73,24 +78,25 @@ export async function initBuildkite({
         },
     }
 
-    let pipeline: { provider: { webhook_url: string }; badge_url: string; web_url: string }
+    let pipeline: BuildkitePipeline
     try {
-        pipeline = (
-            await buildkiteClient.post('organizations/sourcegraph/pipelines', {
-                body: buildkitePipeline,
-                json: true,
-            })
-        ).body
+        pipeline = await buildkiteClient.post<BuildkitePipeline>('organizations/sourcegraph/pipelines', {
+            json: buildkitePipeline,
+            responseType: 'json',
+            resolveBodyOnly: true,
+        })
     } catch (err) {
         if (
-            err.error &&
-            err.error.errors &&
-            err.error.errors[0] &&
-            err.error.errors[0].field === 'name' &&
-            err.error.errors[0].code === 'already_exists'
+            err instanceof HTTPError &&
+            (err.response.body as any)?.errors?.some?.(
+                (err: any) => err?.field === 'name' && err?.code === 'already_exists'
+            )
         ) {
             console.log(`Buildkite pipeline "${repoName}" already exists, skipping creation`)
-            pipeline = (await buildkiteClient.get(`organizations/sourcegraph/pipelines/${repoName}`)).body
+            pipeline = await buildkiteClient.get<BuildkitePipeline>(`organizations/sourcegraph/pipelines/${repoName}`, {
+                responseType: 'json',
+                resolveBodyOnly: true,
+            })
         } else {
             throw err
         }
@@ -99,7 +105,7 @@ export async function initBuildkite({
     console.log('🔗 Creating GitHub webhook for pipeline')
     try {
         await githubClient.post(`/repos/sourcegraph/${repoName}/hooks`, {
-            body: {
+            json: {
                 name: 'web',
                 events: ['push', 'pull_request', 'deployment'],
                 config: {
@@ -110,9 +116,10 @@ export async function initBuildkite({
         })
     } catch (err) {
         if (
-            err.error &&
-            Array.isArray(err.error.errors) &&
-            err.error.errors.some((err: any) => /hook already exists/i.test(err.message))
+            err instanceof HTTPError &&
+            (err.response.body as any)?.errors?.some?.(
+                (err: any) => typeof err?.message === 'string' && /hook already exists/i.test(err.message)
+            )
         ) {
             console.log('Webhook already exists')
         } else {
@@ -123,7 +130,7 @@ export async function initBuildkite({
     console.log('🔐 Granting Buildkite team pull access to repo')
     // buildkite team, see https://api.github.com/orgs/sourcegraph/teams
     await githubClient.put(`/teams/2444623/repos/sourcegraph/${repoName}`, {
-        body: {
+        json: {
             permission: 'pull',
         },
     })
