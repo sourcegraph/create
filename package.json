@@ -71,7 +71,7 @@
     "@types/mz": "0.0.32",
     "@types/node": "11.13.9",
     "download-cli": "^1.1.1",
-    "husky": "^3.1.0",
+    "husky": "^4.2.3",
     "json-schema-to-typescript": "^7.1.0",
     "prettier": "^1.19.1",
     "semantic-release": "^15.13.31",
