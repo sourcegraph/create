@@ -1,16 +1,17 @@
-import got, { GotInstance, GotJSONFn } from 'got'
+import got, { Got } from 'got'
 import * as prompt from './prompt'
 
-export type GitHubClient = GotInstance<GotJSONFn>
+export type GitHubClient = Got
 
 export const createGitHubClient = ({ token }: { token: string }): GitHubClient =>
     got.extend({
-        baseUrl: 'https://api.github.com/',
-        json: true,
+        prefixUrl: 'https://api.github.com/',
         headers: {
             Authorization: 'Bearer ' + token,
             'User-Agent': 'NodeJS',
         },
+        responseType: 'json',
+        resolveBodyOnly: true,
     })
 
 export async function createSourcegraphBotGitHubToken({
@@ -26,17 +27,18 @@ export async function createSourcegraphBotGitHubToken({
     const password = await prompt.password('@sourcegraph-bot GitHub password')
     const otp = await prompt.input('@sourcegraph-bot GitHub 2FA code')
 
-    const response = await githubClient.post('authorizations', {
+    const response = await githubClient.post<{ token: string }>('authorizations', {
         headers: {
             Authorization: 'Basic ' + Buffer.from('sourcegraph-bot:' + password).toString('base64'),
             'X-GitHub-OTP': otp,
         },
-        json: true,
-        body: {
+        json: {
             note: `semantic-release Travis CI for repo ${repoName}`,
             scopes: ['repo', 'read:org', 'user:email', 'repo_deployment', 'repo:status', 'write:repo_hook'],
         },
+        responseType: 'json',
+        resolveBodyOnly: true,
     })
     console.log('🔑 Created GitHub token for @sourcegraph-bot')
-    return response.body.token
+    return response.token
 }

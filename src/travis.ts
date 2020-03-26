@@ -1,17 +1,16 @@
 import delay from 'delay'
-import got, { GotInstance, GotJSONFn } from 'got'
+import got, { Got, HTTPError } from 'got'
 import * as yaml from 'js-yaml'
 import { exists, writeFile } from 'mz/fs'
 import { createSourcegraphBotGitHubToken, GitHubClient } from './github'
 import { createSourcegraphBotNpmToken } from './npm'
 import { JsonSchemaForTravisCiConfigurationFiles } from './travis-schema'
 
-export type TravisClient = GotInstance<GotJSONFn>
+export type TravisClient = Got
 
 export const createTravisClient = ({ token }: { token: string }): TravisClient =>
     got.extend({
-        baseUrl: 'https://api.travis-ci.org/',
-        json: true,
+        prefixUrl: 'https://api.travis-ci.org/',
         headers: {
             Authorization: 'token ' + token,
             'Travis-API-Version': '3',
@@ -32,8 +31,7 @@ const createTravisEnvVar = async ({
     travisClient: TravisClient
 }): Promise<void> => {
     await travisClient.post(`/repo/sourcegraph%2F${repoName}/env_vars`, {
-        json: true,
-        body: {
+        json: {
             'env_var.name': name,
             'env_var.value': value,
             'env_var.public': false,
@@ -53,8 +51,14 @@ interface TravisUser {
     synced_at: string
 }
 
+interface TravisEnvVarsResult {
+    env_vars: {
+        name: string
+    }[]
+}
+
 const getCurrentTravisUser = async ({ travisClient }: { travisClient: TravisClient }): Promise<TravisUser> =>
-    (await travisClient.get('user')).body
+    travisClient.get<TravisUser>('user', { responseType: 'json', resolveBodyOnly: true })
 
 export async function initTravis({
     hasTests,
@@ -128,14 +132,17 @@ export async function initTravis({
             await travisClient.post(`/repo/sourcegraph%2F${repoName}/activate`)
             break
         } catch (err) {
-            if (err.status !== 404) {
+            if (!(err instanceof HTTPError) || err.response.statusCode !== 404) {
                 throw err
             }
         }
     }
 
-    const envVars = (await travisClient.get(`/repo/sourcegraph%2F${repoName}/env_vars`)).body
-    if (envVars.env_vars.some((envVar: any) => envVar.name === 'NPM_TOKEN')) {
+    const envVars = await travisClient.get<TravisEnvVarsResult>(`/repo/sourcegraph%2F${repoName}/env_vars`, {
+        responseType: 'json',
+        resolveBodyOnly: true,
+    })
+    if (envVars.env_vars.some(envVar => envVar.name === 'NPM_TOKEN')) {
         console.log('🔑 NPM_TOKEN already set in Travis, skipping creation')
     } else {
         const npmToken = await createSourcegraphBotNpmToken()
@@ -143,7 +150,7 @@ export async function initTravis({
         await createTravisEnvVar({ repoName, name: 'NPM_TOKEN', value: npmToken, branch: 'master', travisClient })
     }
 
-    if (envVars.env_vars.some((envVar: any) => envVar.name === 'GITHUB_TOKEN')) {
+    if (envVars.env_vars.some(envVar => envVar.name === 'GITHUB_TOKEN')) {
         console.log('🔑 GITHUB_TOKEN already set in Travis, skipping creation')
     } else {
         const githubToken = await createSourcegraphBotGitHubToken({ repoName, githubClient })

@@ -1,6 +1,6 @@
-import got, { GotInstance, GotJSONFn } from 'got'
+import got, { Got } from 'got'
 
-export type CodecovClient = GotInstance<GotJSONFn>
+export type CodecovClient = Got
 
 export interface CodecovRepo {
     upload_token: string
@@ -9,11 +9,12 @@ export interface CodecovRepo {
 
 export const createCodecovClient = ({ token }: { token: string }): CodecovClient =>
     got.extend({
-        baseUrl: 'https://codecov.io/api/',
-        json: true,
+        prefixUrl: 'https://codecov.io/api/',
         headers: {
             Authorization: 'token ' + token,
         },
+        responseType: 'json',
+        resolveBodyOnly: true,
     })
 
 export const getCodecovBadge = ({
