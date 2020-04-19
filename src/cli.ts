@@ -135,7 +135,7 @@ async function main(): Promise<void> {
     console.log('🔑 Giving admin access to all team members')
     // This is the GitHub team in the "sourcegraph" org named "Team"; see
     // https://api.github.com/orgs/sourcegraph/teams.
-    await githubClient.put(`/teams/626894/repos/sourcegraph/${repoName}`, {
+    await githubClient.put(`teams/626894/repos/sourcegraph/${repoName}`, {
         json: {
             permission: 'admin',
         },
