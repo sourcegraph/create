@@ -10,7 +10,7 @@
     "dist"
   ],
   "bin": {
-    "src-create": "dist/cli.js"
+    "create-sourcegraph": "dist/cli.js"
   },
   "keywords": [
     "cli",
