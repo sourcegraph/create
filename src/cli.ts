@@ -210,19 +210,10 @@ async function main(): Promise<void> {
         const vscodeSettings = {
             'editor.formatOnSave': true,
             'typescript.format.semicolons': 'remove',
-            'eslint.autoFixOnSave': true,
-            'eslint.validate': [
-                'javascript',
-                'javascriptreact',
-                {
-                    language: 'typescript',
-                    autoFix: true,
-                },
-                {
-                    language: 'typescriptreact',
-                    autoFix: true,
-                },
-            ],
+            'eslint.validate': ['javascript', 'javascriptreact', 'typescript', 'typescriptreact'],
+            'editor.codeActionsOnSave': {
+                'source.fixAll.eslint': true,
+            },
         }
         await mkdirp('.vscode')
         await writeFile('.vscode/settings.json', JSON.stringify(vscodeSettings, null, 2))
