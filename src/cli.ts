@@ -128,7 +128,7 @@ async function main(): Promise<void> {
                 throw err
             }
         }
-        await exec('git', ['remote', 'add', 'origin', `git@github.com:sourcegraph/${repoName}.git`])
+        await exec('git', ['remote', 'add', 'origin', `https://github.com/sourcegraph/${repoName}.git`])
     } else {
         console.log('📘 Existing git remote detected, skipping GitHub repository creation')
     }
