@@ -25,6 +25,7 @@
   "scripts": {
     "eslint": "eslint 'src/**/*.ts'",
     "build": "tsc -p .",
+    "watch": "tsc -w -p .",
     "package-schema": "download http://json.schemastore.org/package | json2ts | prettier --parser typescript > src/package-schema.ts",
     "travis-schema": "download http://json.schemastore.org/travis | json2ts | prettier --parser typescript > src/travis-schema.ts",
     "tsconfig-schema": "download http://json.schemastore.org/tsconfig | json2ts | prettier --parser typescript > src/tsconfig-schema.ts",
