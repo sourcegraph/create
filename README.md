@@ -15,5 +15,8 @@ It's idempotent, so you can run it on half-initialized repositories too and it w
 ```
 mkdir my-new-package
 cd my-new-package
+
+yarn create @sourcegraph
+# or
 npm init @sourcegraph
 ```
