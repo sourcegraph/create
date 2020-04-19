@@ -30,7 +30,7 @@ const createTravisEnvVar = async ({
     branch?: string
     travisClient: TravisClient
 }): Promise<void> => {
-    await travisClient.post(`/repo/sourcegraph%2F${repoName}/env_vars`, {
+    await travisClient.post(`repo/github/sourcegraph%2F${repoName}/env_vars`, {
         json: {
             'env_var.name': name,
             'env_var.value': value,
@@ -129,16 +129,17 @@ export async function initTravis({
         try {
             await delay(1000)
             console.log(`Activating repository at https://travis-ci.org/sourcegraph/${repoName}`)
-            await travisClient.post(`/repo/sourcegraph%2F${repoName}/activate`)
+            await travisClient.post(`repo/github/sourcegraph%2F${repoName}/activate`)
             break
         } catch (err) {
+            console.log(err.response)
             if (!(err instanceof HTTPError) || err.response.statusCode !== 404) {
                 throw err
             }
         }
     }
 
-    const envVars = await travisClient.get<TravisEnvVarsResult>(`/repo/sourcegraph%2F${repoName}/env_vars`, {
+    const envVars = await travisClient.get<TravisEnvVarsResult>(`repo/github/sourcegraph%2F${repoName}/env_vars`, {
         responseType: 'json',
         resolveBodyOnly: true,
     })
