@@ -58,7 +58,7 @@ async function main(): Promise<void> {
     console.log('*️⃣ Welcome to the Sourcegraph npm package initializer')
 
     if (!(await exists('.git'))) {
-        console.log('📘 .git directory not found, initilizing git repository')
+        console.log('📘 .git directory not found, initializing git repository')
         await exec('git', ['init'])
     }
 
