@@ -70,7 +70,7 @@
     "@types/mz": "2.7.1",
     "@types/node": "12.12.31",
     "download-cli": "^1.1.1",
-    "eslint": "^6.8.0",
+    "eslint": "^7.1.0",
     "husky": "^4.2.3",
     "json-schema-to-typescript": "^8.2.0",
     "prettier": "^2.0.5",
