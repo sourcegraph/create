@@ -65,7 +65,7 @@
     "@sourcegraph/tsconfig": "^4.0.1",
     "@types/execa": "0.9.0",
     "@types/inquirer": "6.5.0",
-    "@types/js-yaml": "3.12.4",
+    "@types/js-yaml": "3.12.5",
     "@types/mkdirp-promise": "5.0.0",
     "@types/mz": "2.7.1",
     "@types/node": "12.12.31",
