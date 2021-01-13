@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-import 'source-map-support/register'
 
 import chalk from 'chalk'
 import exec from 'execa'
