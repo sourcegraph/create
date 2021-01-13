@@ -2,6 +2,9 @@
   "name": "@sourcegraph/create",
   "version": "0.0.0-DEVELOPMENT",
   "description": "CLI to bootstrap Sourcegraph npm packages",
+  "engines": {
+    "node": "^14.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sourcegraph/create.git"
@@ -75,6 +78,6 @@
     "json-schema-to-typescript": "^8.2.0",
     "prettier": "^2.1.2",
     "semantic-release": "^17.0.6",
-    "typescript": "^3.9.3"
+    "typescript": "^4.1.3"
   }
 }
