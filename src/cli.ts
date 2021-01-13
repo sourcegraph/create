@@ -11,7 +11,7 @@ import { createGitHubClient } from './github'
 import { JsonSchemaForNpmPackageJsonFiles } from './package-schema'
 import * as prompt from './prompt'
 import { JsonSchemaForRenovateConfigFilesHttpsRenovatebotCom } from './renovate-schema'
-import { createTravisClient, initTravis } from './travis'
+import { initGitHubWorkflow } from './github-workflow'
 import { JsonSchemaForTheTypeScriptCompilersConfigurationFile } from './tsconfig-schema'
 import { JSONSchemaForESLintConfigurationFiles } from './eslintrc-schema'
 import mkdirp from 'mkdirp-promise'
@@ -41,19 +41,6 @@ async function main(): Promise<void> {
     }
     console.log('Using BUILDKITE_TOKEN from env var')
     const buildkiteClient = createBuildkiteClient({ token: process.env.BUILDKITE_TOKEN })
-
-    if (!process.env.TRAVIS_TOKEN) {
-        throw createCLIError(
-            [
-                'No TRAVIS_TOKEN env var set.',
-                'Copy it from https://travis-ci.org/profile or create one with the Travis CLI by running',
-                '',
-                '    travis login --github-token $GITHUB_TOKEN',
-                '    travis token',
-            ].join('\n')
-        )
-    }
-    const travisClient = createTravisClient({ token: process.env.TRAVIS_TOKEN })
 
     console.log('*️⃣ Welcome to the Sourcegraph npm package initializer')
 
@@ -382,8 +369,8 @@ async function main(): Promise<void> {
         })
         buildBadge = `[![build](${badgeUrl}?branch=master)](${webUrl})`
     } else {
-        await initTravis({ repoName, hasTests, travisClient, githubClient })
-        buildBadge = `[![build](https://travis-ci.org/sourcegraph/${repoName}.svg?branch=master)](https://travis-ci.org/sourcegraph/${repoName})`
+        await initGitHubWorkflow({ repoName, hasTests, githubClient })
+        buildBadge = `[![build](https://img.shields.io/github/workflow/status/sourcegraph/${repoName}/build/master)](https://github.com/sourcegraph/${repoName}/actions?query=branch%3Amaster+workflow%3Abuild)`
     }
 
     if (await exists('README.md')) {

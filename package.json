@@ -30,7 +30,6 @@
     "build": "tsc -p .",
     "watch": "tsc -w -p .",
     "package-schema": "download http://json.schemastore.org/package | json2ts | prettier --parser typescript > src/package-schema.ts",
-    "travis-schema": "download http://json.schemastore.org/travis | json2ts | prettier --parser typescript > src/travis-schema.ts",
     "tsconfig-schema": "download http://json.schemastore.org/tsconfig | json2ts | prettier --parser typescript > src/tsconfig-schema.ts",
     "eslintrc-schema": "download http://json.schemastore.org/eslintrc | json2ts | prettier --parser typescript > src/eslintrc-schema.ts",
     "renovate-schema": "download http://json.schemastore.org/renovate | json2ts | prettier --parser typescript > src/renovate-schema.ts",
@@ -58,7 +57,8 @@
     "mkdirp-promise": "^5.0.1",
     "mz": "^2.7.0",
     "npm-registry-client": "^8.6.0",
-    "source-map-support": "^0.5.16"
+    "source-map-support": "^0.5.16",
+    "tweetsodium": "^0.0.5"
   },
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
@@ -75,7 +75,7 @@
     "download-cli": "^1.1.1",
     "eslint": "^7.17.0",
     "husky": "^4.2.3",
-    "json-schema-to-typescript": "^8.2.0",
+    "json-schema-to-typescript": "^10.1.2",
     "prettier": "^2.1.2",
     "semantic-release": "^17.0.6",
     "typescript": "^4.1.3"
