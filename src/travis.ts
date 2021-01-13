@@ -17,7 +17,7 @@ export const createTravisClient = ({ token }: { token: string }): TravisClient =
         },
     })
 
-const createTravisEnvVar = async ({
+const createTravisEnvironmentVar = async ({
     repoName,
     name,
     value,
@@ -51,7 +51,7 @@ interface TravisUser {
     synced_at: string
 }
 
-interface TravisEnvVarsResult {
+interface TravisEnvironmentVarsResult {
     env_vars: {
         name: string
     }[]
@@ -131,31 +131,31 @@ export async function initTravis({
             console.log(`Activating repository at https://travis-ci.org/sourcegraph/${repoName}`)
             await travisClient.post(`repo/github/sourcegraph%2F${repoName}/activate`)
             break
-        } catch (err) {
-            console.log(err.response)
-            if (!(err instanceof HTTPError) || err.response.statusCode !== 404) {
-                throw err
+        } catch (error) {
+            console.log(error.response)
+            if (!(error instanceof HTTPError) || error.response.statusCode !== 404) {
+                throw error
             }
         }
     }
 
-    const envVars = await travisClient.get<TravisEnvVarsResult>(`repo/github/sourcegraph%2F${repoName}/env_vars`, {
+    const environmentVars = await travisClient.get<TravisEnvironmentVarsResult>(`repo/github/sourcegraph%2F${repoName}/env_vars`, {
         responseType: 'json',
         resolveBodyOnly: true,
     })
-    if (envVars.env_vars.some(envVar => envVar.name === 'NPM_TOKEN')) {
+    if (environmentVars.env_vars.some(environmentVar => environmentVar.name === 'NPM_TOKEN')) {
         console.log('🔑 NPM_TOKEN already set in Travis, skipping creation')
     } else {
         const npmToken = await createSourcegraphBotNpmToken()
         console.log('🔑 Setting NPM_TOKEN env var in Travis')
-        await createTravisEnvVar({ repoName, name: 'NPM_TOKEN', value: npmToken, branch: 'master', travisClient })
+        await createTravisEnvironmentVar({ repoName, name: 'NPM_TOKEN', value: npmToken, branch: 'master', travisClient })
     }
 
-    if (envVars.env_vars.some(envVar => envVar.name === 'GITHUB_TOKEN')) {
+    if (environmentVars.env_vars.some(environmentVar => environmentVar.name === 'GITHUB_TOKEN')) {
         console.log('🔑 GITHUB_TOKEN already set in Travis, skipping creation')
     } else {
         const githubToken = await createSourcegraphBotGitHubToken({ repoName, githubClient })
         console.log('🔑 Setting GITHUB_TOKEN env var in Travis')
-        await createTravisEnvVar({ repoName, name: 'GITHUB_TOKEN', value: githubToken, branch: 'master', travisClient })
+        await createTravisEnvironmentVar({ repoName, name: 'GITHUB_TOKEN', value: githubToken, branch: 'master', travisClient })
     }
 }

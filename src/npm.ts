@@ -27,8 +27,8 @@ export async function createSourcegraphBotNpmToken(): Promise<string> {
                 body,
                 auth: { otp },
             },
-            (err: any, data: any, raw: any, response: any) =>
-                err ? reject(Object.assign(err, { response })) : resolve(data)
+            (error: any, data: any, raw: any, response: any) =>
+                error ? reject(Object.assign(error, { response })) : resolve(data)
         )
     )
     if (!response.token) {

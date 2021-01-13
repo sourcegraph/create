@@ -85,11 +85,11 @@ export async function initBuildkite({
             responseType: 'json',
             resolveBodyOnly: true,
         })
-    } catch (err) {
+    } catch (error) {
         if (
-            err instanceof HTTPError &&
-            (err.response.body as any)?.errors?.some?.(
-                (err: any) => err?.field === 'name' && err?.code === 'already_exists'
+            error instanceof HTTPError &&
+            (error.response.body as any)?.errors?.some?.(
+                (error_: any) => error_?.field === 'name' && error_?.code === 'already_exists'
             )
         ) {
             console.log(`Buildkite pipeline "${repoName}" already exists, skipping creation`)
@@ -98,7 +98,7 @@ export async function initBuildkite({
                 resolveBodyOnly: true,
             })
         } else {
-            throw err
+            throw error
         }
     }
 
@@ -114,16 +114,16 @@ export async function initBuildkite({
                 },
             },
         })
-    } catch (err) {
+    } catch (error) {
         if (
-            err instanceof HTTPError &&
-            (err.response.body as any)?.errors?.some?.(
-                (err: any) => typeof err?.message === 'string' && /hook already exists/i.test(err.message)
+            error instanceof HTTPError &&
+            (error.response.body as any)?.errors?.some?.(
+                (error_: any) => typeof error_?.message === 'string' && /hook already exists/i.test(error_.message)
             )
         ) {
             console.log('Webhook already exists')
         } else {
-            throw err
+            throw error
         }
     }
 

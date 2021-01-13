@@ -66,9 +66,9 @@ async function main(): Promise<void> {
     let description: string | undefined
     try {
         ;({ name: packageName, description } = JSON.parse(await readFile('package.json', 'utf-8')))
-    } catch (err) {
-        if (err.code !== 'ENOENT') {
-            throw err
+    } catch (error) {
+        if (error.code !== 'ENOENT') {
+            throw error
         }
     }
     if (packageName) {
@@ -110,22 +110,22 @@ async function main(): Promise<void> {
                 },
             })
             console.log(`📘 Created https://github.com/sourcegraph/${repoName}`)
-        } catch (err) {
+        } catch (error) {
             if (
-                err instanceof HTTPError &&
-                (err.response.body as any)?.errors?.some?.(
-                    (err: any) =>
-                        err?.resource === 'Repository' &&
-                        err?.field === 'name' &&
-                        typeof err?.message === 'string' &&
-                        /already exists/i.test(err.message)
+                error instanceof HTTPError &&
+                (error.response.body as any)?.errors?.some?.(
+                    (error_: any) =>
+                        error_?.resource === 'Repository' &&
+                        error_?.field === 'name' &&
+                        typeof error_?.message === 'string' &&
+                        /already exists/i.test(error_.message)
                 )
             ) {
                 console.log(
                     `📘 Repository already exists at https://github.com/sourcegraph/${repoName}, skipping creation`
                 )
             } else {
-                throw err
+                throw error
             }
         }
         await exec('git', ['remote', 'add', 'origin', `https://github.com/sourcegraph/${repoName}.git`])
@@ -157,8 +157,8 @@ async function main(): Promise<void> {
             resolveBodyOnly: true,
         })
         const licenseText = license.body
-            .replace(/\[year\]/g, new Date().getFullYear().toString())
-            .replace(/\[fullname\]/g, 'Sourcegraph')
+            .replace(/\[year]/g, new Date().getFullYear().toString())
+            .replace(/\[fullname]/g, 'Sourcegraph')
         await writeFile('LICENSE', licenseText)
     }
 
@@ -267,9 +267,9 @@ async function main(): Promise<void> {
     try {
         packageJson = JSON.parse(await readFile('package.json', 'utf-8'))
         console.log('📄 package.json already exists, skipping creation')
-    } catch (err) {
-        if (err.code !== 'ENOENT') {
-            throw err
+    } catch (error) {
+        if (error.code !== 'ENOENT') {
+            throw error
         }
         console.log('📄 Adding package.json')
         packageJson = {
@@ -321,9 +321,9 @@ async function main(): Promise<void> {
     try {
         console.log('📂 Creating src directory')
         await mkdir('src')
-    } catch (err) {
-        if (err.code !== 'EEXIST') {
-            throw err
+    } catch (error) {
+        if (error.code !== 'EEXIST') {
+            throw error
         }
     }
 
@@ -437,11 +437,11 @@ async function main(): Promise<void> {
     setTimeout(() => process.exit(0), 100)
 }
 
-main().catch(err => {
-    if (err.showStack === false) {
-        console.error('\n' + chalk.red(err.message) + '\n')
+main().catch(error => {
+    if (error.showStack === false) {
+        console.error('\n' + chalk.red(error.message) + '\n')
     } else {
-        console.error(err)
+        console.error(error)
     }
     setTimeout(() => process.exit(1), 100)
 })
