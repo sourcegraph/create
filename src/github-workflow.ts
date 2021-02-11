@@ -5,6 +5,7 @@ import { exists, writeFile } from 'mz/fs'
 import { GitHubClient } from './github'
 import { createSourcegraphBotNpmToken } from './npm'
 import * as sodium from 'tweetsodium'
+import mkdirp from 'mkdirp-promise'
 
 const createGitHubSecret = async ({
     repoName,
@@ -103,6 +104,7 @@ export async function initGitHubWorkflow({
                 },
             },
         }
+        await mkdirp('.github/workflows')
         await writeFile('.github/workflows/build.yml', yaml.dump(workflowYaml))
     }
 

@@ -119,13 +119,17 @@ async function main(): Promise<void> {
         console.log('📘 Existing git remote detected, skipping GitHub repository creation')
     }
     console.log('🔑 Giving admin access to all team members')
-    // This is the GitHub team in the "sourcegraph" org named "Team"; see
+    // This is the GitHub team in the "sourcegraph" org named "Everyone"; see
     // https://api.github.com/orgs/sourcegraph/teams.
-    await githubClient.put(`teams/626894/repos/sourcegraph/${repoName}`, {
-        json: {
-            permission: 'admin',
-        },
-    })
+    try {
+        await githubClient.put(`teams/626894/repos/sourcegraph/${repoName}`, {
+            json: {
+                permission: 'admin',
+            },
+        })
+    } catch (error) {
+        throw new Error(error)
+    }
 
     enum LicenseName {
         Unlicensed = 'UNLICENSED',
@@ -368,6 +372,7 @@ async function main(): Promise<void> {
         })
         buildBadge = `[![build](${badgeUrl}?branch=master)](${webUrl})`
     } else {
+        console.log('creating github actions stuff')
         await initGitHubWorkflow({ repoName, hasTests, githubClient })
         buildBadge = `[![build](https://img.shields.io/github/workflow/status/sourcegraph/${repoName}/build/master)](https://github.com/sourcegraph/${repoName}/actions?query=branch%3Amaster+workflow%3Abuild)`
     }
