@@ -5,6 +5,7 @@ import { exists, writeFile } from 'mz/fs'
 import { GitHubClient } from './github'
 import { createSourcegraphBotNpmToken } from './npm'
 import * as sodium from 'tweetsodium'
+import mkdirp from 'mkdirp-promise'
 
 const createGitHubSecret = async ({
     repoName,
@@ -18,7 +19,7 @@ const createGitHubSecret = async ({
     githubClient: GitHubClient
 }): Promise<void> => {
     // Get public key for repository
-    const { keyId, key } = await githubClient.get<{ keyId: string; key: string }>(
+    const { key_id: keyId, key } = await githubClient.get<{ key_id: string; key: string }>(
         `repos/sourcegraph/${repoName}/actions/secrets/public-key`,
         {
             responseType: 'json',
@@ -36,7 +37,7 @@ const createGitHubSecret = async ({
     // Base64 the encrypted secret
     const encryptedValue = Buffer.from(encryptedBytes).toString('base64')
 
-    await githubClient.post(`repos/sourcegraph/${repoName}/actions/secrets/${name}`, {
+    await githubClient.put(`repos/sourcegraph/${repoName}/actions/secrets/${name}`, {
         json: {
             encrypted_value: encryptedValue,
             key_id: keyId,
@@ -103,6 +104,7 @@ export async function initGitHubWorkflow({
                 },
             },
         }
+        await mkdirp('.github/workflows')
         await writeFile('.github/workflows/build.yml', yaml.dump(workflowYaml))
     }
 
