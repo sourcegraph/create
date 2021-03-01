@@ -70,7 +70,7 @@
     "@types/js-yaml": "3.12.5",
     "@types/mkdirp-promise": "5.0.0",
     "@types/mz": "2.7.3",
-    "@types/node": "12.12.31",
+    "@types/node": "12.20.4",
     "download-cli": "^1.1.1",
     "eslint": "^7.19.0",
     "husky": "^4.2.3",
