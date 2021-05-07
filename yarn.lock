@@ -654,6 +654,11 @@
   dependencies:
     "@types/node" "*"
 
+"@types/lodash@^4.14.168":
+  version "4.14.168"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.168.tgz#fe24632e79b7ade3f132891afff86caa5e5ce008"
+  integrity sha512-oVfRvqHV/V6D1yifJbVRU3TMp8OT6o6BG+U9MkwuJ3U8/CsDHvalRpsxBqivn71ztOFZBTfJMvETbqHiaNSj7Q==
+
 "@types/minimatch@*":
   version "3.0.3"
   resolved "https://registry.npmjs.org/@types/minimatch/-/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
@@ -3072,7 +3077,7 @@ get-proxy@^2.0.0:
   dependencies:
     npm-conf "^1.1.0"
 
-get-stdin@8.0.0:
+get-stdin@8.0.0, get-stdin@^8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/get-stdin/-/get-stdin-8.0.0.tgz#cbad6a73feb75f6eeb22ba9e01f89aa28aa97a53"
   integrity sha512-sY22aA6xchAzprjyqmSEQv4UbAAzRN0L2dQB0NlN5acTTK9Don6nhoc3eAbUnpZiCANAMfd/+40kVdKfFygohg==
@@ -3920,14 +3925,16 @@ json-schema-ref-parser@^9.0.6:
   dependencies:
     "@apidevtools/json-schema-ref-parser" "9.0.6"
 
-json-schema-to-typescript@^10.1.2:
-  version "10.1.2"
-  resolved "https://registry.npmjs.org/json-schema-to-typescript/-/json-schema-to-typescript-10.1.2.tgz#696e0dd5ab76e59b6700f6ac424d4b1d91526b52"
-  integrity sha512-BKn+custnB0vUCWkMB3xXsc7efoHtiPeEpJme9Lw5dGesl9VnKU6U0yasUn4kf+gMypV3COMsuNzsQtPwvfQsA==
+json-schema-to-typescript@^10.1.4:
+  version "10.1.4"
+  resolved "https://registry.yarnpkg.com/json-schema-to-typescript/-/json-schema-to-typescript-10.1.4.tgz#6d8ae66937d07bd054095fc4a541aa81acea3549"
+  integrity sha512-HWm23Z6Fnj3rnm4FKZh3sMz70hNoA+AfqVuV+ZcwFIhq6v76YVUMZSLlonrw7GI5yIoiuuJjB5rqakIYRCLlsg==
   dependencies:
     "@types/json-schema" "^7.0.6"
+    "@types/lodash" "^4.14.168"
     "@types/prettier" "^2.1.5"
     cli-color "^2.0.0"
+    get-stdin "^8.0.0"
     glob "^7.1.6"
     glob-promise "^3.4.0"
     is-glob "^4.0.1"
@@ -3938,7 +3945,6 @@ json-schema-to-typescript@^10.1.2:
     mkdirp "^1.0.4"
     mz "^2.7.0"
     prettier "^2.2.0"
-    stdin "0.0.1"
 
 json-schema-traverse@^0.3.0:
   version "0.3.1"
@@ -6551,11 +6557,6 @@ ssri@^6.0.0, ssri@^6.0.1:
   integrity sha512-3Wge10hNcT1Kur4PDFwEieXSCMCJs/7WvSACcrMYrNp+b8kDL1/0wJch5Ni2WrtwEa2IO8OsVfeKIciKCDx/QA==
   dependencies:
     figgy-pudding "^3.5.1"
-
-stdin@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/stdin/-/stdin-0.0.1.tgz#d3041981aaec3dfdbc77a1b38d6372e38f5fb71e"
-  integrity sha1-0wQZgarsPf28d6GzjWNy449ftx4=
 
 stream-combiner2@~1.1.1:
   version "1.1.1"
