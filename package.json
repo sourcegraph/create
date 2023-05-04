@@ -60,8 +60,8 @@
     "tweetsodium": "^0.0.5"
   },
   "devDependencies": {
-    "@commitlint/cli": "^17.6.1",
-    "@commitlint/config-conventional": "^17.6.1",
+    "@commitlint/cli": "^17.6.3",
+    "@commitlint/config-conventional": "^17.6.3",
     "@sourcegraph/eslint-config": "^0.23.0",
     "@sourcegraph/prettierrc": "^3.0.3",
     "@sourcegraph/tsconfig": "^4.0.1",
