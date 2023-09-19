@@ -3,7 +3,7 @@
   "version": "0.0.0-DEVELOPMENT",
   "description": "CLI to bootstrap Sourcegraph npm packages",
   "engines": {
-    "node": "^14.0.0"
+    "node": "^14.21.3"
   },
   "repository": {
     "type": "git",
