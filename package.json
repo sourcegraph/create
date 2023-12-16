@@ -74,7 +74,7 @@
     "download-cli": "^1.1.1",
     "eslint": "^7.32.0",
     "husky": "^4.2.3",
-    "json-schema-to-typescript": "^10.1.2",
+    "json-schema-to-typescript": "^10.1.5",
     "prettier": "^2.2.1",
     "semantic-release": "^17.0.6",
     "typescript": "^4.1.3"
