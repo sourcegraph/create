@@ -65,7 +65,7 @@
     "@sourcegraph/eslint-config": "^0.23.0",
     "@sourcegraph/prettierrc": "^3.0.3",
     "@sourcegraph/tsconfig": "^4.0.1",
-    "@types/execa": "0.9.0",
+    "@types/execa": "2.0.0",
     "@types/inquirer": "8.2.10",
     "@types/js-yaml": "3.12.5",
     "@types/mkdirp-promise": "5.0.0",
