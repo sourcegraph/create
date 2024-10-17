@@ -3,7 +3,7 @@
   "version": "0.0.0-DEVELOPMENT",
   "description": "CLI to bootstrap Sourcegraph npm packages",
   "engines": {
-    "node": "^14.0.0"
+    "node": "^20.18.0"
   },
   "repository": {
     "type": "git",
@@ -70,7 +70,7 @@
     "@types/js-yaml": "3.12.5",
     "@types/mkdirp-promise": "5.0.0",
     "@types/mz": "2.7.8",
-    "@types/node": "12.20.55",
+    "@types/node": "20.16.12",
     "download-cli": "^1.1.1",
     "eslint": "^7.32.0",
     "husky": "^4.2.3",
