@@ -760,10 +760,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/mz@2.7.8":
-  version "2.7.8"
-  resolved "https://registry.yarnpkg.com/@types/mz/-/mz-2.7.8.tgz#5ac05b34f08e6225d7ad9b05e158b03d9ca9e2d4"
-  integrity sha512-mGLNqqwt8yu4pDw9rEphAiyWnEdok0GzOGrwi5EiTuDFxw7H3ZaEI4ASFKq4HaZtemtjQ8MkcmtWcrU4V0WkIw==
+"@types/mz@2.7.9":
+  version "2.7.9"
+  resolved "https://registry.yarnpkg.com/@types/mz/-/mz-2.7.9.tgz#f97c13aea704d806809d7c21ee490982503e7e7d"
+  integrity sha512-BqcaQb+0i5O5FzYLYwRVfSR5DpKK11vP4CSwjujGt9VdN+5xHMWE0f/OuM8r7Y30KO4evLMptd2+2w5GkuKjtg==
   dependencies:
     "@types/node" "*"
 
