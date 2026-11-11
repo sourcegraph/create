@@ -57,7 +57,7 @@
     "mkdirp-promise": "^5.0.1",
     "mz": "^2.7.0",
     "npm-registry-client": "^8.6.0",
-    "tweetsodium": "^0.0.5"
+    "tweetsodium": "^0.0.6"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.8.1",
